@@ -1,6 +1,7 @@
 import React from "react";
 
 import './Login.css'
+import Logo from '../../assets/images/logo.png';
 
 async function loginUser(credentials) {
   const requestOptions = {
@@ -44,6 +45,7 @@ function Login(props) {
   return (
     <div className="login-page">
       <div className="login-form">
+        <img alt="log" src={Logo} className="logo"/>
         <form onSubmit={handleSubmit}>
           <input
             type="text"

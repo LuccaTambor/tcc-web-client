@@ -8,8 +8,7 @@ import Content from "./components/Content/Content";
 function App() {
   const [userData, setUserData] = React.useState();
 
-
-  function handleUserData(data) {
+  const handleUserData = (data) => {
     setUserData(data)
   }
 

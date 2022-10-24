@@ -2,8 +2,15 @@
 
 .login-page {
   width: 100%;
-  padding: 15% 0 0;
+  padding: 5% 0 0;
   margin: 0;
+}
+
+.logo {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 60px;
+  height: 200px;
 }
 
 .login-form {
