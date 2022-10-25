@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 //components
 import Login from "./components/Login/Login";
 import Content from "./components/Content/Content";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   const [userData, setUserData] = React.useState();
@@ -18,10 +19,11 @@ function App() {
 
   return (
     <div>
-      <h1>Application</h1>
       <BrowserRouter>
+      <Navbar />
         <Routes>
-          <Route path="/" element={<Content yourName={userData}/>} />
+          <Route path="/" />
+          <Route path="/content" element={<Content userDataName={userData.name} />} />
         </Routes>
       </BrowserRouter>
     </div>

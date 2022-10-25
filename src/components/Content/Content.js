@@ -2,7 +2,9 @@ import React from "react";
 
 function Content(props){
   return(
-    <h1>Oioi</h1>
+    <div className="container">
+      Bem vindo {props.userDataName}!
+    </div>
   );
 }
 
