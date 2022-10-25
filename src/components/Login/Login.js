@@ -1,7 +1,7 @@
 import React from "react";
 
 import './Login.css'
-import Logo from '../../assets/images/logo.png';
+import Logo from '../../assets/images/Logo.png';
 
 async function loginUser(credentials) {
   const requestOptions = {

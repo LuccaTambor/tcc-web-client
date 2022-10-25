@@ -19,15 +19,15 @@ function Navbar() {
         <SideNav.Nav defaultSelected="/">
           <NavItem eventKey="">
             <NavIcon>
-                <i className="fa-solid fa-house" style={{ fontSize: '1.75em' }} />
+                <i className="fa-solid fa-house" style={{ fontSize: '1.75em' , color: 'white'}} />
             </NavIcon>
-            <NavText>Início</NavText>
+            <NavText>INÍCIO</NavText>
           </NavItem>
           <NavItem eventKey="content">
             <NavIcon>
                 <i className="fas fa-paperclip" style={{ fontSize: '1.75em' }} />
             </NavIcon>
-            <NavText>Conteúdo</NavText>
+            <NavText>CONTEÚDO</NavText>
           </NavItem>
         </SideNav.Nav>
       </SideNav>

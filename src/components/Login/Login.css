@@ -42,18 +42,19 @@
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #A187C8 ;
+  background: #7A4EBB ;
   width: 100%;
   border: 0;
   border-radius: 5px;
   padding: 15px;
   color: #FFFFFF;
   font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
+  -webkit-transition: 0.3s;
+  transition:0.3s;
   cursor: pointer;
 }
 
 .login-form button:hover,.login-form button:active,.login-form button:focus {
-  background: #7A4EBB;
+  transition-delay: 10ms;
+  background: #9674c9;
 }
