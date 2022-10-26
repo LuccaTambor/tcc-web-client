@@ -1,5 +1,5 @@
 import React from "react";
-import SideNav, {Toggle,NavItem, NavIcon, NavText} from "@trendmicro/react-sidenav";
+import SideNav, {Toggle, NavItem, NavIcon, NavText} from "@trendmicro/react-sidenav";
 import { useNavigate } from "react-router-dom";
 
 import './Navbar.css';
@@ -16,6 +16,8 @@ function Navbar() {
         className="my-navbar"
       >
         <Toggle />
+        <br />
+        <br />
         <SideNav.Nav defaultSelected="/">
           <NavItem eventKey="">
             <NavIcon>
@@ -23,11 +25,11 @@ function Navbar() {
             </NavIcon>
             <NavText>INÍCIO</NavText>
           </NavItem>
-          <NavItem eventKey="content">
+          <NavItem eventKey="desenvolvedores">
             <NavIcon>
-                <i className="fas fa-paperclip" style={{ fontSize: '1.75em' }} />
+                <i className="fas fa-user" style={{ fontSize: '1.75em' }} />
             </NavIcon>
-            <NavText>CONTEÚDO</NavText>
+            <NavText>DESENVOLVEDORES</NavText>
           </NavItem>
         </SideNav.Nav>
       </SideNav>

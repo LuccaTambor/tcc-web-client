@@ -1,0 +1,44 @@
+.container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.page-title {
+  color: #7A4EBB;
+  font-size: 2.5rem; 
+}
+
+.dev-tables { 
+  padding-top: 1rem;
+}
+
+.dev-tables table {
+  width: 80%;
+  border-spacing: 0;
+  border: 1px solid black;
+}
+
+.dev-tables table tr:last-child td{
+  border-bottom: 0;
+}
+
+.dev-tables table th{
+  margin: 0;
+  padding: 0.5rem;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.dev-tables table th:last-child{
+  border-right: 0;
+}
+
+.dev-tables table td{
+  margin: 0;
+  padding: 0.5rem;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.dev-tables table td:last-child{
+  border-right: 0;
+}
