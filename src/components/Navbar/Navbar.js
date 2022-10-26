@@ -26,12 +26,12 @@ function Navbar(props) {
             </NavIcon>
             <NavText>INÍCIO</NavText>
           </NavItem>
-          <NavItem eventKey="desenvolvedores">
+          {props.isManager() && <NavItem eventKey="desenvolvedores">
             <NavIcon>
                 <i className="fas fa-user" style={{ fontSize: '1.75em' }} />
             </NavIcon>
             <NavText>DESENVOLVEDORES</NavText>
-          </NavItem>
+          </NavItem>}
           <NavItem eventKey="projetos">
             <NavIcon>
                 <i className="fas fa-folder" style={{ fontSize: '1.75em' }} />

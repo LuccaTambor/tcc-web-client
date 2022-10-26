@@ -14,7 +14,7 @@ async function loginUser(credentials) {
     .catch(err => {
       console.error(err);
     });
- }
+}
 
 function Login(props) {
 

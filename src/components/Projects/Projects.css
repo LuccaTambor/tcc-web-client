@@ -1,0 +1,15 @@
+.projects {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+	--text-color: slategray;
+	--bgColorDarker: #ececec;
+	--bgColorLighter: #fcfcfc;
+	--insideBorderColor: lightgray;
+  --primaryColor: #7A4EBB;
+  --secondaryColor: #9674c9;
+}
+
+.page-title {
+  color: var(--primaryColor);
+  font-size: 2.5rem; 
+  text-transform: uppercase;
+}

@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./components/Login/Login";
 import Navbar from "./components/Navbar/Navbar";
 import Developers from "./components/Developers/Developers";
+import Projects from "./components/Projects/Projects";
 
 function App() {
   const [userData, setUserData] = React.useState();
@@ -19,6 +20,10 @@ function App() {
     setUserData(data)
   }
 
+  const isManager = () => {
+    return userData.hasOwnProperty("projects");
+  };
+
   if(!userData) {
     return <Login onSetData={handleUserData}/>
   }
@@ -26,10 +31,11 @@ function App() {
   return (
     <div className={"container "  + (navToggled ? "toggled" : "")}>
       <BrowserRouter>
-      <Navbar handleToggle={onToggled}/>
+      <Navbar handleToggle={onToggled} isManager={isManager}/>
         <Routes>
           <Route path="/" />
           <Route path="/desenvolvedores" element={<Developers />} />
+          <Route path="/projetos" element={<Projects isManager={isManager} userData={userData}/>} />
         </Routes>
       </BrowserRouter>
     </div>
