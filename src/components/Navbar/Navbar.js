@@ -31,6 +31,12 @@ function Navbar() {
             </NavIcon>
             <NavText>DESENVOLVEDORES</NavText>
           </NavItem>
+          <NavItem eventKey="projetos">
+            <NavIcon>
+                <i className="fas fa-folder" style={{ fontSize: '1.75em' }} />
+            </NavIcon>
+            <NavText>PROJETOS</NavText>
+          </NavItem>
         </SideNav.Nav>
       </SideNav>
   )

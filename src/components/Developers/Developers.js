@@ -17,7 +17,8 @@ function Developers(props){
     return {
       name: dev.name,
       function: dev.function,
-      document: dev.document
+      document: dev.document,
+      email: dev.email
     }
   })
 
@@ -28,25 +29,28 @@ function Developers(props){
         accessor: 'name'
       },
       {
-        Header: 'Document',
+        Header: 'Cargo',
+        accessor: 'function',
+      },
+      {
+        Header: 'Documento',
         accessor: 'document',
       },
       {
-        Header: 'Function',
-        accessor: 'function',
-      },
+        Header: 'Email',
+        accessor: 'email'
+      }
     ],
     []
   );
 
-  console.log(devs.length)
   return(
     <div className="container">
       <h2 className="page-title">Desenvolvedores Cadastrados</h2>
-      <button className="primary-btn">+ Criar Novo</button>
       <div className="dev-tables">
         {devs.length >= 1 && <Table columns={columns} data={devs} />}
       </div>
+      <button className="primary-btn side-button">+ Criar Novo</button>
     </div>
   );
 }

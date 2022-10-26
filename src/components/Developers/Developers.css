@@ -1,44 +1,72 @@
 .container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+	--text-color: slategray;
+	--bgColorDarker: #ececec;
+	--bgColorLighter: #fcfcfc;
+	--insideBorderColor: lightgray;
+  --primaryColor: #7A4EBB;
+  --secondaryColor: #9674c9;
 }
 
 .page-title {
-  color: #7A4EBB;
+  color: var(--primaryColor);
   font-size: 2.5rem; 
+  text-transform: uppercase;
 }
 
-.dev-tables { 
-  padding-top: 1rem;
+.side-button {
+  position: relative;
+  left: 80.5%;
 }
 
-.dev-tables table {
-  width: 80%;
-  border-spacing: 0;
-  border: 1px solid black;
+table {
+	width: 90%;
+	margin: 0;
+	padding: 0;
+  margin-top: 1rem;
+	border: 1px solid var(--secondaryColor);
+	border-collapse: collapse;
+	color: var(--text-color);
+	table-layout: fixed;
 }
 
-.dev-tables table tr:last-child td{
-  border-bottom: 0;
+table caption {
+	margin: 1rem 0;
+	color: var(--text-color);
+	font-size: 1.5rem;
+	font-weight: 600;
+	letter-spacing: 0.055rem;
+	text-align: center;
 }
 
-.dev-tables table th{
-  margin: 0;
-  padding: 0.5rem;
-  border-bottom: 1px solid black;
-  border-right: 1px solid black;
+table thead tr {
+	color: whitesmoke;
+	background-color: var(--secondaryColor);
+	font-size: 1rem;
+  font-weight: bold;
 }
 
-.dev-tables table th:last-child{
-  border-right: 0;
+table tbody tr {
+	border: 1px solid var(--insideBorderColor);
+	background-color: var(--bgColorDarker);
 }
 
-.dev-tables table td{
-  margin: 0;
-  padding: 0.5rem;
-  border-bottom: 1px solid black;
-  border-right: 1px solid black;
+table tbody tr:nth-child(odd) {
+	background-color: var(--bgColorLighter);
 }
 
-.dev-tables table td:last-child{
-  border-right: 0;
+table th {
+	letter-spacing: 0.075rem;
+}
+
+table th,
+table td {
+	padding: 0.75rem 1rem;
+	font-weight: normal;
+	text-align: left;
+}
+
+table th:nth-child(4),
+table td:nth-child(4) {
+	text-align: right;
 }
