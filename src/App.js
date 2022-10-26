@@ -8,6 +8,12 @@ import Developers from "./components/Developers/Developers";
 
 function App() {
   const [userData, setUserData] = React.useState();
+  const [navToggled, setNavToggled] = React.useState(false);
+
+  const onToggled = () => {
+    setNavToggled(prevNavToggled => !prevNavToggled);
+    console.log(navToggled)
+  }
 
   const handleUserData = (data) => {
     setUserData(data)
@@ -18,9 +24,9 @@ function App() {
   }
 
   return (
-    <div>
+    <div className={"container "  + (navToggled ? "toggled" : "")}>
       <BrowserRouter>
-      <Navbar />
+      <Navbar handleToggle={onToggled}/>
         <Routes>
           <Route path="/" />
           <Route path="/desenvolvedores" element={<Developers />} />

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import './Navbar.css';
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 
-function Navbar() {
+function Navbar(props) {
   const navigate = useNavigate()
 
   return (
@@ -14,6 +14,7 @@ function Navbar() {
           navigate('/'+selected)
         }}
         className="my-navbar"
+        onToggle={props.handleToggle}
       >
         <Toggle />
         <br />

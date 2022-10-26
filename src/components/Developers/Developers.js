@@ -45,7 +45,7 @@ function Developers(props){
   );
 
   return(
-    <div className="container">
+    <div className="developers">
       <h2 className="page-title">Desenvolvedores Cadastrados</h2>
       <div className="dev-tables">
         {devs.length >= 1 && <Table columns={columns} data={devs} />}
