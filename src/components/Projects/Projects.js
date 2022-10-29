@@ -3,6 +3,9 @@ import _ from "lodash";
 
 import './Projects.css'
 
+//components
+import ProjectCard from '../ProjectCard/ProjectCard.js';
+
 async function getData(userId) {
   return fetch('/api/projects/GetManagerProjects?id=' + userId)
     .then(data => data.json())
@@ -27,18 +30,18 @@ function Projects(props) {
 
   const projectsDescriptions = _.map(projects, (proj, i) => {
     return (
-        <h1 key={i}>{proj.description}</h1>
+        <ProjectCard projectData={proj} key={i}/>
     );
   });
   
   return(
     <div className="projects">
       <h2 className="page-title">Projetos</h2>
-      {props.isManager() &&
-        <h2>Vc é um gerente </h2>
-        && projectsDescriptions
-      }
-      
+      <div className="project-cards">
+        {props.isManager() &&
+          projectsDescriptions
+        }
+      </div>  
     </div>
   )
 }
