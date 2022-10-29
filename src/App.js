@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Developers from "./components/Developers/Developers";
 import Projects from "./components/Projects/Projects";
 import ProjectDetails from "./components/ProjectDetails/ProjectDetails";
+import Team from "./components/Team/Team";
 
 function App() {
   const [userData, setUserData] = React.useState();
@@ -14,7 +15,6 @@ function App() {
 
   const onToggled = () => {
     setNavToggled(prevNavToggled => !prevNavToggled);
-    console.log(navToggled)
   }
 
   const handleUserData = (data) => {
@@ -38,6 +38,7 @@ function App() {
           <Route path="/desenvolvedores" element={<Developers />} />
           <Route path="/projetos" element={<Projects isManager={isManager} userData={userData}/>} />
           <Route path="/detalhes-projeto/:id" element={<ProjectDetails />} />
+          <Route path="/time/:id" element={<Team />} />
         </Routes>
       </BrowserRouter>
     </div>

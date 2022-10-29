@@ -1,0 +1,13 @@
+.team {
+  --primaryColor: #7A4EBB;
+  --secondaryColor: #9674c9;
+  padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+h1 {
+  color: var(--primaryColor);
+  font-size: 2.5rem; 
+  text-transform: uppercase;
+}

@@ -13,8 +13,6 @@ function ProjectCard(props) {
     let start = moment(startDate)
     let today = moment();
 
-    console.log(expectedDate)
-
     if(start > today)
     return (<span>Não Iniciado</span>);
     if(expectedDate > today)

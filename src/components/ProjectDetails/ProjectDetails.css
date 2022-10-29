@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,600;1,200;1,400;1,600&display=swap");
+
 .project-details {
   --primaryColor: #7A4EBB;
   --secondaryColor: #9674c9;
@@ -17,4 +19,37 @@
 .start-date {
   margin-top: 0;
   font-size: 1rem;
+}
+
+.end-date {
+  color: var(--primaryColor);
+  text-transform: uppercase;
+  font-size: 2rem;
+  margin-top: 1rem;
+}
+
+.teams h2{
+  color: var(--secondaryColor);
+}
+
+.team-link {
+  text-decoration: none;
+}
+
+.team-card {
+  font-family: 'Poppins', sans-serif;
+  border-radius: 5px;
+  background-color: rgb(245, 241, 241);
+  box-shadow: 0px 30px 40px -20px rgba(0, 0, 0, 0.2);
+  border-top: 3px solid var(--secondaryColor);
+  padding: 20px;
+  max-width: 300px;
+}
+
+.team-card h2 {
+  text-align: left;
+  font-weight: 600;
+  margin: 0px;
+  padding: 0px;
+  color: black;
 }
