@@ -1,0 +1,20 @@
+.project-details {
+  --primaryColor: #7A4EBB;
+  --secondaryColor: #9674c9;
+  padding: 0;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.project-title {
+  padding: 0;
+  margin-bottom: 0;
+  color: var(--primaryColor);
+  font-size: 3rem;
+  text-transform: uppercase;
+}
+
+.start-date {
+  margin-top: 0;
+  font-size: 1rem;
+}

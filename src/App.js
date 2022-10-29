@@ -6,6 +6,7 @@ import Login from "./components/Login/Login";
 import Navbar from "./components/Navbar/Navbar";
 import Developers from "./components/Developers/Developers";
 import Projects from "./components/Projects/Projects";
+import ProjectDetails from "./components/ProjectDetails/ProjectDetails";
 
 function App() {
   const [userData, setUserData] = React.useState();
@@ -36,6 +37,7 @@ function App() {
           <Route path="/" />
           <Route path="/desenvolvedores" element={<Developers />} />
           <Route path="/projetos" element={<Projects isManager={isManager} userData={userData}/>} />
+          <Route path="/detalhes-projeto/:id" element={<ProjectDetails />} />
         </Routes>
       </BrowserRouter>
     </div>
