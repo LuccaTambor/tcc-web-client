@@ -30,7 +30,7 @@ function App() {
   }
 
   return (
-    <div className={"container "  + (navToggled ? "toggled" : "")}>
+    <div className={"container "  + (navToggled ? "toggled" : "")} id="main">
       <BrowserRouter>
       <Navbar handleToggle={onToggled} isManager={isManager}/>
         <Routes>

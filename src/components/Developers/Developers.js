@@ -50,7 +50,7 @@ function Developers(props){
       <div className="dev-tables">
         {devs.length >= 1 && <Table columns={columns} data={devs} />}
       </div>
-      <button className="primary-btn side-button">+ Criar Novo</button>
+      <button className="btn-primary">+ Criar Novo</button>
     </div>
   );
 }

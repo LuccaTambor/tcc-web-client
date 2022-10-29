@@ -36,14 +36,19 @@
   text-decoration: none;
 }
 
+.list-teams {
+  display: flex;
+}
+
 .team-card {
   font-family: 'Poppins', sans-serif;
   border-radius: 5px;
   background-color: rgb(245, 241, 241);
-  box-shadow: 0px 30px 40px -20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
   border-top: 3px solid var(--secondaryColor);
   padding: 20px;
-  max-width: 300px;
+  min-width: 300px;
+  margin-right: 50px;
 }
 
 .team-card h2 {
@@ -52,4 +57,37 @@
   margin: 0px;
   padding: 0px;
   color: black;
+}
+
+.team-modal{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  background-color: white;
+  padding: 20px;
+  height: 200px !important;
+  width: 500px;
+}
+
+.team-modal h3{
+  color: black;
+}
+
+.team-modal form {
+  display: flex;
+}
+
+.team-modal input {
+  border-radius: 5px;
+  outline: 0;
+  width: 100%;
+  border: 1px solid lightgrey;
+  margin: 0 0 15px;
+  padding: 15px;
+  margin-right: 20px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.team-modal button {
+  margin-top: 0;
+  height: 15px;
 }

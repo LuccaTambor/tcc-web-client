@@ -24,7 +24,6 @@ function Team(props) {
     })
   },[id])
 
-
   const devs = _.map(teamData.developers, (dev,i) => {
     return (
       <p key={i}>{dev.name}</p>
@@ -33,7 +32,7 @@ function Team(props) {
 
   return (
     <div className="team">
-      <h1>{teamData.project} / {teamData.teamName}</h1>
+      <h1> {teamData.project} / {teamData.teamName}</h1>
       {devs}
     </div>
     
