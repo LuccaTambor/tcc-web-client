@@ -60,6 +60,7 @@ function Team(props) {
     return {
       id: dev.id,
       name: dev.name,
+      document: dev.document,
       function: dev.function,
     }
   });
@@ -93,6 +94,10 @@ function Team(props) {
       {
         Header: 'Cargo',
         accessor: 'function',
+      },
+      {
+        Header: 'Documento',
+        accessor: 'document',
       },
       {
         Header: "Ação",

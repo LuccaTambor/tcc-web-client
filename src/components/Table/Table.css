@@ -1,4 +1,10 @@
 table {
+	--text-color: slategray;
+	--bgColorDarker: #ececec;
+	--bgColorLighter: #fcfcfc;
+	--insideBorderColor: lightgray;
+  --primaryColor: #7A4EBB;
+  --secondaryColor: #9674c9;
 	width: 100%;
 	margin: 0;
 	padding: 0;
