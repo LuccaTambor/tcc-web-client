@@ -85,31 +85,28 @@ function Team(props) {
     })
   }
 
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'Nome',
-        accessor: 'name'
-      },
-      {
-        Header: 'Cargo',
-        accessor: 'function',
-      },
-      {
-        Header: 'Documento',
-        accessor: 'document',
-      },
-      {
-        Header: "Ação",
-        Cell: row => (
-          <button className="delete-btn" onClick={e => removeFromTeam(row.row.original)} title="Remover do time"> 
-            <i className="fas fa-times"></i>
-          </button>
-        )
-      }
-    ],
-    []
-  );
+  const columns = [
+    {
+      Header: 'Nome',
+      accessor: 'name'
+    },
+    {
+      Header: 'Cargo',
+      accessor: 'function',
+    },
+    {
+      Header: 'Documento',
+      accessor: 'document',
+    },
+    {
+      Header: "Ação",
+      Cell: row => (
+        <button className="delete-btn" onClick={e => removeFromTeam(row.row.original)} title="Remover do time"> 
+          <i className="fas fa-times"></i>
+        </button>
+      )
+    }
+  ];
 
   //modal functions
   function openModal() {
@@ -120,27 +117,24 @@ function Team(props) {
     setIsOpen(false);
   }
 
-  const AddDevColumns = React.useMemo(
-    () => [
-      {
-        Header: 'Nome',
-        accessor: 'name'
-      },
-      {
-        Header: 'Cargo',
-        accessor: 'function',
-      },
-      {
-        Header: "Ação",
-        Cell: row => (
-          <button className="add-btn" onClick={e => addToTeam(row.row.original.id)} title="Adicionar ao time"> 
-            <i className="fas fa-plus"></i>
-          </button>
-        )
-      }
-    ],
-    []
-  );
+  const AddDevColumns = [
+    {
+      Header: 'Nome',
+      accessor: 'name'
+    },
+    {
+      Header: 'Cargo',
+      accessor: 'function',
+    },
+    {
+      Header: "Ação",
+      Cell: row => (
+        <button className="add-btn" onClick={e => addToTeam(row.row.original.id)} title="Adicionar ao time"> 
+          <i className="fas fa-plus"></i>
+        </button>
+      )
+    }
+  ]
 
   return (
     <div className="team">

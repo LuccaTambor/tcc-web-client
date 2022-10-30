@@ -4,12 +4,14 @@ import './Login.css'
 import Logo from '../../assets/images/Logo.png';
 
 async function loginUser(credentials) {
-  const requestOptions = {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  }
-  
-  return fetch('/api/users/login/?userName=' + credentials.userName + '&password=' + credentials.password, requestOptions)
+  return fetch('/api/users/login', {
+    method: "POST",
+    body: JSON.stringify(credentials),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
     .then(data => data.json())
     .catch(err => {
       console.error(err);
