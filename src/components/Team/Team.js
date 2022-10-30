@@ -1,5 +1,5 @@
 import React from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import _ from "lodash";
 import Modal from 'react-modal';
 
@@ -7,7 +7,7 @@ import './Team.css';
 
 import Table from '../Table/Table.js';
 
-async function getDataOfDevs(teamId) {
+async function getTeamData(teamId) {
   return fetch('/api/teams/getTeam?teamId=' + teamId)
     .then(data => data.json())
     .catch(err => {
@@ -23,9 +23,27 @@ async function getDataOfDevsNotOnTeam(teamId) {
     });
 }
 
-async function addDevToTeam(teamId, devId) {
+async function addDevToTeam(devId, teamId) {
   return fetch('/api/teams/addDevToTeam?devId='+ devId +'&teamId=' + teamId, {
     method: "PUT",
+  })
+  .catch(err => {
+    console.error(err);
+  });
+}
+
+async function removeDevFromTeam(devId, teamId) {
+  return fetch('/api/teams/removeDevFromTeam?devId='+ devId +'&teamId=' + teamId, {
+    method: "PUT",
+  })
+  .catch(err => {
+    console.error(err);
+  });
+}
+
+async function deleteTeam (teamId) {
+  return fetch('/api/teams/deleteTeam?teamId=' + teamId, {
+    method: "DELETE",
   })
   .catch(err => {
     console.error(err);
@@ -35,13 +53,14 @@ async function addDevToTeam(teamId, devId) {
 Modal.setAppElement('#root');
 
 function Team(props) {
+  const navigate = useNavigate();
   const {id} = useParams();
   const [teamData, setTeamData] = React.useState({});
   const [devsNotOnTeam, setDevsNotOnTeam] = React.useState({});
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    getDataOfDevs(id)
+    getTeamData(id)
     .then(data => setTeamData(data))
     .catch(err => {
       console.log("Erro ao carregar dados dos projetos.");
@@ -73,15 +92,38 @@ function Team(props) {
     }
   })
 
-  const removeFromTeam = (name) => {
-    console.log(name);
+  const updateTeam = async () => {
+    await getTeamData(id)
+    .then(data => setTeamData(data))
+    .catch(err => {
+      console.log("Erro ao carregar dados dos projetos.");
+    })
   }
 
   const addToTeam = async (devId) => {
     await addDevToTeam(devId, id)
+    .then(updateTeam)
     .then(closeModal())
     .catch(err => {
-      console.log("Erro ao criar novo time");
+      console.log("Erro ao adiconar dev ao time");
+    })
+  }
+
+  const removeFromTeam = async (devId) => {
+    await removeDevFromTeam(devId, id)
+    .then(updateTeam)
+    .then(closeModal())
+    .catch(err => {
+      console.log("Erro ao remover dev ao time");
+    })
+  }
+
+
+  const removeTeam = async () => {
+    await deleteTeam(id)
+    .then(navigate(-1))
+    .catch(err => {
+      console.log("Erro ao deletar time");
     })
   }
 
@@ -101,7 +143,7 @@ function Team(props) {
     {
       Header: "Ação",
       Cell: row => (
-        <button className="delete-btn" onClick={e => removeFromTeam(row.row.original)} title="Remover do time"> 
+        <button className="delete-btn" onClick={e => removeFromTeam(row.row.original.id)} title="Remover do time"> 
           <i className="fas fa-times"></i>
         </button>
       )
@@ -117,7 +159,8 @@ function Team(props) {
     setIsOpen(false);
   }
 
-  const AddDevColumns = [
+  const AddDevColumns =
+  [
     {
       Header: 'Nome',
       accessor: 'name'
@@ -134,8 +177,7 @@ function Team(props) {
         </button>
       )
     }
-  ]
-
+  ];
   return (
     <div className="team">
       <h1> {teamData.project} / {teamData.teamName}</h1>
@@ -144,6 +186,8 @@ function Team(props) {
         {devs.length >= 1 && <Table columns={columns} data={devs} />}
       </div>
       <button className="btn-primary" onClick={openModal}>Adicionar ao time</button>
+      <br />
+      <button className="btn-danger" onClick={removeTeam}>Excluir Time</button>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -154,7 +198,7 @@ function Team(props) {
         <span onClick={closeModal} className="close-btn"><i className="fas fa-times"></i></span>
         <h3>Adicionar desenvolvedor ao time</h3>
         <div className="dev-tables">
-          {devs.length >= 1 && <Table columns={AddDevColumns} data={devsNotOnTeamData} />}
+          <Table columns={AddDevColumns} data={devsNotOnTeamData} />
         </div>
       </Modal>
     </div>
