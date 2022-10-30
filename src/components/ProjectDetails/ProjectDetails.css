@@ -61,10 +61,8 @@
 
 .team-modal{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-  background-color: white;
-  padding: 20px;
-  height: 200px !important;
-  width: 500px;
+  height: fit-content;
+  width: fit-content;
 }
 
 .team-modal h3{

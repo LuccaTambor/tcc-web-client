@@ -11,6 +11,7 @@ body, .rooot, .app {
   padding: 0;
   margin: 0;
   margin-left: 120px;
+  margin-right: 50px;
   transition: all 300ms;
 }
 
@@ -66,9 +67,14 @@ body, .rooot, .app {
   top: 35%;
   transform: translate(-50%, -50%);
   border: 1px solid var(--secondaryColor);
+  background-color: white;
+  padding: 40px;
 }
 
 .modal .close-btn {
+  position: inherit;
+  right: 3%;
+  top: 0%;
   cursor: pointer;
   font-size: 2rem;
   color: #7A4EBB;

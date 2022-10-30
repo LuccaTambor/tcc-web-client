@@ -1,0 +1,124 @@
+table {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+  margin-top: 1rem;
+	border: 1px solid var(--secondaryColor);
+	border-collapse: collapse;
+	color: var(--text-color);
+	table-layout: fixed;
+}
+
+table caption {
+	margin: 1rem 0;
+	color: var(--text-color);
+	font-size: 1.5rem;
+	font-weight: 600;
+	letter-spacing: 0.055rem;
+	text-align: center;
+}
+
+table thead tr {
+	color: whitesmoke;
+	background-color: var(--secondaryColor);
+	font-size: 1rem;
+  font-weight: bold;
+}
+
+table tbody tr {
+	border: 1px solid var(--insideBorderColor);
+	background-color: var(--bgColorDarker);
+}
+
+table tbody tr:nth-child(odd) {
+	background-color: var(--bgColorLighter);
+}
+
+table th {
+	letter-spacing: 0.075rem;
+}
+
+table th,
+table td {
+	padding: 0.75rem 1rem;
+	font-weight: normal;
+	text-align: left;
+}
+
+table th:nth-child(4),
+table td:nth-child(4) {
+	text-align: right;
+}
+
+.delete-btn {
+	background-color: rgb(209, 76, 76);
+	border: none;
+	border-radius: 5px;
+	height: 40px;
+	width: 40px;
+	cursor: pointer;
+}
+
+.delete-btn:hover{
+	background-color: rgb(243, 77, 77);
+}
+
+
+.add-btn {
+	background-color: rgb(70, 172, 70);
+	border: none;
+	border-radius: 5px;
+	height: 40px;
+	width: 40px;
+	cursor: pointer;
+}
+
+.add-btn:hover{
+	background-color: rgb(56, 189, 56);
+}
+/* 
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	table { 
+	  	width: 100%; 
+	}
+
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+
+	td:before { 
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+		content: attr(data-column);
+
+		color: #000;
+		font-weight: bold;
+	}
+
+}

@@ -14,101 +14,42 @@
   text-transform: uppercase;
 }
 
-table {
-	width: 90%;
-	margin: 0;
-	padding: 0;
-  margin-top: 1rem;
-	border: 1px solid var(--secondaryColor);
-	border-collapse: collapse;
-	color: var(--text-color);
-	table-layout: fixed;
+.dev-modal{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  height: fit-content;
+  width: fit-content;
 }
 
-table caption {
-	margin: 1rem 0;
-	color: var(--text-color);
-	font-size: 1.5rem;
-	font-weight: 600;
-	letter-spacing: 0.055rem;
-	text-align: center;
+.dev-modal input {
+  border-radius: 5px;
+  outline: 0;
+  width: 100%;
+  border: 1px solid lightgrey;
+  margin: 0 0 15px;
+  padding: 15px;
+  margin-right: 20px;
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
-table thead tr {
-	color: whitesmoke;
-	background-color: var(--secondaryColor);
-	font-size: 1rem;
-  font-weight: bold;
+.confirm-password {
+  margin-bottom: 0;
 }
 
-table tbody tr {
-	border: 1px solid var(--insideBorderColor);
-	background-color: var(--bgColorDarker);
+.dev-modal .password-inputs{
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-table tbody tr:nth-child(odd) {
-	background-color: var(--bgColorLighter);
+.btn-save {
+  width: 100% !important;
 }
 
-table th {
-	letter-spacing: 0.075rem;
-}
-
-table th,
-table td {
-	padding: 0.75rem 1rem;
-	font-weight: normal;
-	text-align: left;
-}
-
-table th:nth-child(4),
-table td:nth-child(4) {
-	text-align: right;
-}
-
-/* 
-Max width before this PARTICULAR table gets nasty
-This query will take effect for any screen smaller than 760px
-and also iPads specifically.
-*/
-@media 
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
-
-	table { 
-	  	width: 100%; 
-	}
-
-	table, thead, tbody, th, td, tr { 
-		display: block; 
-	}
-	
-	thead tr { 
-		position: absolute;
-		top: -9999px;
-		left: -9999px;
-	}
-	
-	tr { border: 1px solid #ccc; }
-	
-	td { 
-		border: none;
-		border-bottom: 1px solid #eee; 
-		position: relative;
-		padding-left: 50%; 
-	}
-
-	td:before { 
-		position: absolute;
-		top: 6px;
-		left: 6px;
-		width: 45%; 
-		padding-right: 10px; 
-		white-space: nowrap;
-		content: attr(data-column);
-
-		color: #000;
-		font-weight: bold;
-	}
-
+.wrong-password {
+  padding: 0;
+  margin: 0;
+  color: red;
+  margin-bottom: 10px;
 }
