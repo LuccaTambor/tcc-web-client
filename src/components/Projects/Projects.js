@@ -6,8 +6,10 @@ import './Projects.css'
 //components
 import ProjectCard from '../ProjectCard/ProjectCard.js';
 
-async function getData(userId) {
-  return fetch('/api/projects/GetManagerProjects?id=' + userId)
+async function getData(userId, isManager) {
+  let url = isManager ? '/api/projects/GetManagerProjects?id=' : '/api/projects/GetDevProjects?id='
+
+  return fetch(url+ userId)
     .then(data => data.json())
     .catch(err => {
       console.error(err);
@@ -19,12 +21,12 @@ function Projects(props) {
   const userId = props.userData?.id;
 
   React.useEffect(() => {
-    getData(userId)
+    getData(userId, props.isManager())
     .then(data => setProjectsData(data))
     .catch(err => {
       console.log("Erro ao carregar dados dos projetos.");
     })
-  },[userId])
+  },[userId, props])
 
   const projects = {...projectsData};
 
@@ -38,9 +40,7 @@ function Projects(props) {
     <div className="projects">
       <h2 className="page-title">Projetos</h2>
       <div className="project-cards">
-        {props.isManager() &&
-          projectsDescriptions
-        }
+        {projectsDescriptions}
       </div>  
     </div>
   )

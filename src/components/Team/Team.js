@@ -162,7 +162,7 @@ function Team(props) {
 
   const tasks = _.map(onGoingTasks, (task) => {
     return (
-      <Task taskData={task} handleFinish={markAsFinished}/>
+      <Task taskData={task} handleFinish={markAsFinished} isManager={props.isManager}/>
     )
   })
 
@@ -287,21 +287,24 @@ function Team(props) {
   return (
     <div className="team">
       <h1> {teamData.project} / {teamData.teamName}</h1>
-      <div className="dev-tables">
-        <h3>Membros do time</h3>
-        {devs.length >= 1 && <Table columns={columns} data={devs} />}
-      </div>
-      <button className="btn-primary" onClick={openModal}>Adicionar ao time</button>
+      {props.isManager() && <div>
+        <div className="dev-tables">
+          <h3>Membros do time</h3>
+          {devs.length >= 1 && <Table columns={columns} data={devs} />}
+        </div>
+        <button className="btn-primary" onClick={openModal}>Adicionar ao time</button>  
+      </div>}
       <br />
       <div className="tasks">
         <h3>Tarefas em andamento:</h3>
         <div className="tasks-section">
           {tasks}
         </div>
-        <button className="btn-primary" onClick={openTaskModal}>Criar Tarefa</button>
+        {props.isManager() && <button className="btn-primary" onClick={openTaskModal}>Criar Tarefa</button>}
       </div>
       <br />
-      <button className="btn-danger" onClick={removeTeam}>Excluir Time</button>
+      {props.isManager() && <button className="btn-danger" onClick={removeTeam}>Excluir Time</button>}
+      {!props.isManager() && <button className="btn-primary">Ocorrência</button>}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

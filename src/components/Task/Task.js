@@ -14,7 +14,7 @@ function Task(props) {
         <p>Prazo estimado: <Moment format="DD/MM/YYYY">{props.taskData.expectedDate}</Moment></p>
       </div>
       <div className="footer">
-        <span className="done-btn" onClick={()=> props.handleFinish(props.taskData.id)}><i className="fas fa-check"></i></span>
+        {props.isManager() && <span className="done-btn" onClick={()=> props.handleFinish(props.taskData.id)}><i className="fas fa-check"></i></span>}
       </div>
     </div>
   )

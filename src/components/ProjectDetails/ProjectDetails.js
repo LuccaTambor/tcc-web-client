@@ -6,8 +6,10 @@ import _ from "lodash";
 
 import './ProjectDetails.css';
 
-async function getData(projId) {
-  return fetch('/api/projects/getProject?id=' + projId)
+async function getData(projId, isManager, userId) {
+  let url = isManager ? '/api/projects/getProject?id=' + projId : '/api/projects/getProjectAsDev?id='+projId+'&devId=' + userId;
+
+  return fetch(url)
     .then(data => data.json())
     .catch(err => {
       console.error(err);
@@ -34,12 +36,12 @@ function ProjectDetails(props) {
   });
 
   React.useEffect(() => {
-    getData(id)
+    getData(id, props.isManager(), props.userData.id)
       .then(data => setProjectData(data))
       .catch(err => {
         console.log("Erro ao carregar dados dos projetos.");
       })
-  },[id])
+  },[id, props])
 
   const teams = _.map(projectData.teams, team => {
     const teamUrl = "/time/" + team.id;
@@ -88,12 +90,12 @@ function ProjectDetails(props) {
       <small className="start-date">Data de início: <Moment format="DD/MM/YYYY">{projectData.startedOn}</Moment></small>
       <h3 className="end-date">Prazo: <Moment format="DD/MM/YYYY">{projectData.expectedFinishDate}</Moment></h3>
       <div className="teams">
-        <h2>Times do Projeto</h2>
+        <h2>{!props.isManager() && <span>Seus</span>} Times do Projeto</h2>
         <div className="list-teams">
           {teams} 
         </div>  
       </div>
-      <div className="btn-primary" onClick={openModal}>Criar Time</div>
+      {props.isManager() && <div className="btn-primary" onClick={openModal}>Criar Time</div>}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
