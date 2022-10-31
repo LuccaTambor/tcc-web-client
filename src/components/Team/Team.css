@@ -11,3 +11,43 @@ h1 {
   font-size: 2.5rem; 
   text-transform: uppercase;
 }
+
+.task-modal {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  width: fit-content;
+  height: fit-content;
+}
+
+.task-modal input {
+  border-radius: 5px;
+  outline: 0;
+  width: 100%;
+  border: 1px solid lightgrey;
+  margin: 0 0 15px;
+  padding: 15px;
+  margin-right: 20px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.task-modal textarea {
+  border-radius: 5px;
+  outline: 0;
+  width: 100%;
+  height: 150px;
+  border: 1px solid lightgrey;
+  margin: 0 0 15px;
+  padding: 15px;
+  margin-right: 20px;
+  box-sizing: border-box;
+  font-size: 14px;
+  resize: none;
+}
+
+.task-modal button {
+  width: 100%;
+}
+
+.tasks-section {
+  display: flex;
+}

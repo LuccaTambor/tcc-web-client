@@ -1,0 +1,49 @@
+.task-card {
+  padding: 0;
+  margin: 0;
+  margin-right: 25px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  --primaryColor: #7A4EBB;
+  --secondaryColor: #9674c9;
+  background-color: rgb(245, 241, 241);
+  border: 1px solid var(--secondaryColor);
+  border-top: 3px solid var(--secondaryColor);
+  border-radius: 5px;
+  width: 300px;
+  height: 225px;
+}
+
+.task-card .header {
+  padding: 0;
+  margin: 0;
+  height: 50px;
+  background-color: var(--secondaryColor)
+}
+
+.task-card .header h3 {
+  padding: 0;
+  margin: 0;
+  margin-left: 5%;
+  padding-top: 3%;
+  color: white;
+}
+
+.task-card .body {
+  color: black;
+  padding: 10px;
+}
+
+.task-card .footer {
+  background-color: var(--secondaryColor);
+  margin-top: 10%;
+  width: 100%;
+  height: 35px;
+}
+
+.task-card .footer .done-btn{
+  margin-right: 10px;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  float: right;
+}

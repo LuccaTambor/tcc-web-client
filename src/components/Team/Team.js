@@ -2,10 +2,12 @@ import React from "react";
 import {useParams, useNavigate} from "react-router-dom";
 import _ from "lodash";
 import Modal from 'react-modal';
+import moment from 'moment';
 
 import './Team.css';
 
 import Table from '../Table/Table.js';
+import Task from '../Task/Task.js';
 
 async function getTeamData(teamId) {
   return fetch('/api/teams/getTeam?teamId=' + teamId)
@@ -50,20 +52,62 @@ async function deleteTeam (teamId) {
   });
 }
 
+async function createTask(newTask, teamId) {
+  return fetch('/api/tasks/createNewTask?teamId=' + teamId, {
+    method: "POST",
+    body: JSON.stringify(newTask),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+  .catch(err => {
+    console.error(err);
+  });
+}
+
+async function getOnGoingTasks(teamId) {
+  return fetch('/api/tasks/getOnGoingTask?teamId=' + teamId)
+    .then(data => data.json())
+    .catch(err => {
+      console.error(err);
+    });
+}
+
+async function markTaskAsFinished(taskId) {
+  return fetch('/api/tasks/markAsFinished?taskId=' + taskId, {
+    method: "PUT"
+  })
+    .then(data => data.json())
+    .catch(err => {
+      console.error(err);
+    });
+}
+
 Modal.setAppElement('#root');
 
 function Team(props) {
   const navigate = useNavigate();
   const {id} = useParams();
+  const newTaskModel = {
+    code: 0,
+    title: "",
+    description: "",
+    expectedDate: moment().toDate()
+  };
+
   const [teamData, setTeamData] = React.useState({});
   const [devsNotOnTeam, setDevsNotOnTeam] = React.useState({});
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [taskModalOpen, setTaskModalOpen] = React.useState(false);
+  const [newTaskData, setNewTaskData] = React.useState(newTaskModel)
+  const [onGoingTasks, setOnGoingTasks] = React.useState({});
 
   React.useEffect(() => {
     getTeamData(id)
     .then(data => setTeamData(data))
     .catch(err => {
-      console.log("Erro ao carregar dados dos projetos.");
+      console.log("Erro ao carregar dados do time.");
     })
   },[id])
 
@@ -71,7 +115,15 @@ function Team(props) {
     getDataOfDevsNotOnTeam(id)
     .then(data => setDevsNotOnTeam(data))
     .catch(err => {
-      console.log("Erro ao carregar dados dos projetos.");
+      console.log("Erro ao carregar membros do time");
+    })
+  },[id])
+
+  React.useEffect(() => {
+    getOnGoingTasks(id)
+    .then(data => setOnGoingTasks(data))
+    .catch(err => {
+      console.log("Erro ao carregar tarefas do time");
     })
   },[id])
 
@@ -90,6 +142,20 @@ function Team(props) {
       name: dev.name,
       function: dev.function,
     }
+  })
+ 
+  function markAsFinished (id) {
+    // await markTaskAsFinished(id)
+    // .catch(err => {
+    //   console.log("Erro ao finalizar tarefa");
+    // })
+    console.log(id);
+  }
+
+  const tasks = _.map(onGoingTasks, (task) => {
+    return (
+      <Task taskData={task} finish={markAsFinished}/>
+    )
   })
 
   const updateTeam = async () => {
@@ -159,6 +225,25 @@ function Team(props) {
     setIsOpen(false);
   }
 
+  //task modal functions
+  function openTaskModal() {
+    setTaskModalOpen(true);
+  }
+
+  function closeTaskModal() {
+    setTaskModalOpen(false);
+  }
+
+  const handleNewTaskForm = (event) => {
+    const {name, value} = event.target;
+    setNewTaskData(prevNewTaskData => {
+      return {
+        ...prevNewTaskData,
+        [name]: value
+      }
+    })
+  }
+
   const AddDevColumns =
   [
     {
@@ -178,6 +263,19 @@ function Team(props) {
       )
     }
   ];
+
+  const submitTaskForm = async event => {
+    event.preventDefault();
+    await createTask(newTaskData, id)
+      .then(closeTaskModal())
+      .then(setNewTaskData(newTaskModel))
+      .catch(err => {
+        console.log("Erro ao criar tarefa");
+      })
+  }
+
+
+
   return (
     <div className="team">
       <h1> {teamData.project} / {teamData.teamName}</h1>
@@ -186,6 +284,14 @@ function Team(props) {
         {devs.length >= 1 && <Table columns={columns} data={devs} />}
       </div>
       <button className="btn-primary" onClick={openModal}>Adicionar ao time</button>
+      <br />
+      <div className="tasks">
+        <h3>Tarefas em andamento:</h3>
+        <div className="tasks-section">
+          {tasks}
+        </div>
+        <button className="btn-primary" onClick={openTaskModal}>Criar Tarefa</button>
+      </div>
       <br />
       <button className="btn-danger" onClick={removeTeam}>Excluir Time</button>
       <Modal
@@ -200,6 +306,53 @@ function Team(props) {
         <div className="dev-tables">
           <Table columns={AddDevColumns} data={devsNotOnTeamData} />
         </div>
+      </Modal>
+      <Modal
+        isOpen={taskModalOpen}
+        onRequestClose={closeTaskModal}
+        contentLabel="Example Modal"
+        className="modal task-modal"
+        overlayClassName="overlay"
+      >
+        <span onClick={closeTaskModal} className="close-btn"><i className="fas fa-times"></i></span>
+        <h3>Criar tarefa no time</h3>
+        <form onSubmit={submitTaskForm}>
+          <label>Título da Tarefa</label>
+          <input 
+            type="text"
+            name="title"
+            value={newTaskData.title}
+            onChange={handleNewTaskForm}
+            required
+          />
+          <label>Código da Tarefa</label>
+          <input 
+            type="number"
+            name="code"
+            value={newTaskData.code}
+            onChange={handleNewTaskForm}
+            required
+            className="half"
+          />
+          <label>Data de conclusão esperada</label>
+          <input 
+            type="date"
+            name="expectedDate"
+            value={newTaskData.expectedDate}
+            onChange={handleNewTaskForm}
+            required
+            className="half"
+          />
+          <label>Descrição</label>
+          <textarea 
+            type="text"
+            name="description"
+            value={newTaskData.description}
+            onChange={handleNewTaskForm}
+            required
+          />
+          <button className="btn-primary">Criar</button>
+        </form>
       </Modal>
     </div>
   )
