@@ -127,6 +127,14 @@ function Team(props) {
     })
   },[id])
 
+  const updateTasks = () => {
+    getOnGoingTasks(id)
+    .then(data => setOnGoingTasks(data))
+    .catch(err => {
+      console.log("Erro ao carregar tarefas do time");
+    })
+  }
+
   const devs = _.map(teamData.developers, (dev,i) => {
     return {
       id: dev.id,
@@ -144,17 +152,17 @@ function Team(props) {
     }
   })
  
-  function markAsFinished (id) {
-    // await markTaskAsFinished(id)
-    // .catch(err => {
-    //   console.log("Erro ao finalizar tarefa");
-    // })
-    console.log(id);
+  function markAsFinished (taskId) {
+    markTaskAsFinished(taskId)
+    .then(updateTasks)
+    .catch(err => {
+      console.log("Erro ao finalizar tarefa");
+    })
   }
 
   const tasks = _.map(onGoingTasks, (task) => {
     return (
-      <Task taskData={task} finish={markAsFinished}/>
+      <Task taskData={task} handleFinish={markAsFinished}/>
     )
   })
 
