@@ -455,7 +455,7 @@ function Team(props) {
             <option value={OcurrenceType.MissPlaning}>Problema no Planejamento e Gestão do Projeto</option>
             <option value={OcurrenceType.SecurityProblem}>Problema de Segurança</option>
             <option value={OcurrenceType.PoorBuiltScope}>Problema com o Escopo do Projeto</option>
-            <option value={OcurrenceType.MarketingIssue}>Problema dom o Marketing</option>
+            <option value={OcurrenceType.MarketingIssue}>Problema com o Marketing</option>
             <option value={OcurrenceType.MonetizationProblem}>Problema no Planejamento de Monetização</option>
           </select>
           <button className="btn-primary">Criar</button>

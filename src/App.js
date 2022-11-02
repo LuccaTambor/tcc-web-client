@@ -8,6 +8,7 @@ import Developers from "./components/Developers/Developers";
 import Projects from "./components/Projects/Projects";
 import ProjectDetails from "./components/ProjectDetails/ProjectDetails";
 import Team from "./components/Team/Team";
+import Statistics from "./components/Statistics/Statistics";
 
 function App() {
   const [userData, setUserData] = React.useState();
@@ -39,6 +40,7 @@ function App() {
           <Route path="/projetos" element={<Projects isManager={isManager} userData={userData}/>} />
           <Route path="/detalhes-projeto/:id" element={<ProjectDetails isManager={isManager} userData={userData} />}/>
           <Route path="/time/:id" element={<Team isManager={isManager} userId={userData.id} />} />
+          <Route path="/estatisticas" element={<Statistics managerId={userData.id}/>} />
         </Routes>
       </BrowserRouter>
     </div>

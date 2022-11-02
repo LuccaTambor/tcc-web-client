@@ -38,6 +38,12 @@ function Navbar(props) {
             </NavIcon>
             <NavText>PROJETOS</NavText>
           </NavItem>
+          {props.isManager() && <NavItem eventKey="estatisticas">
+            <NavIcon>
+                <i className="fas fa-chart-bar" style={{ fontSize: '1.75em' }} />
+            </NavIcon>
+            <NavText>OCORRÊNCIAS E DADOS</NavText>
+          </NavItem>}
         </SideNav.Nav>
       </SideNav>
   )
