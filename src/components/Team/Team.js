@@ -9,6 +9,8 @@ import './Team.css';
 import Table from '../Table/Table.js';
 import Task from '../Task/Task.js';
 
+import OcurrenceType from '../Enums/OccurrenceType.js';
+
 async function getTeamData(teamId) {
   return fetch('/api/teams/getTeam?teamId=' + teamId)
     .then(data => data.json())
@@ -84,6 +86,18 @@ async function markTaskAsFinished(taskId) {
     });
 }
 
+async function createNewOccurrence(newOccurrence) {
+  newOccurrence.occurrenceType = parseInt(newOccurrence.occurrenceType, 10)
+  return fetch('/api/occurrences/createOccurrence', {
+    method: "POST",
+    body: JSON.stringify(newOccurrence),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
 Modal.setAppElement('#root');
 
 function Team(props) {
@@ -96,11 +110,20 @@ function Team(props) {
     expectedDate: moment().toDate()
   };
 
+  const newOccurrenceModel = {
+    description: "",
+    occurrenceType: OcurrenceType.Bug,
+    teamId: id,
+    developerId: props.userId
+  }
+
   const [teamData, setTeamData] = React.useState({});
   const [devsNotOnTeam, setDevsNotOnTeam] = React.useState({});
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [taskModalOpen, setTaskModalOpen] = React.useState(false);
+  const [occurrenceModalOpen, setOccurrenceModalOpen] = React.useState(false);
   const [newTaskData, setNewTaskData] = React.useState(newTaskModel)
+  const [newOccurrenceData, setNewOccurrenceData] = React.useState(newOccurrenceModel);
   const [onGoingTasks, setOnGoingTasks] = React.useState({});
 
   React.useEffect(() => {
@@ -192,7 +215,6 @@ function Team(props) {
     })
   }
 
-
   const removeTeam = async () => {
     await deleteTeam(id)
     .then(navigate(-1))
@@ -242,11 +264,30 @@ function Team(props) {
     setTaskModalOpen(false);
   }
 
+  //occurrence modal functions
+  function openOccurrenceModal() {
+    setOccurrenceModalOpen(true);
+  }
+
+  function closeOccurrenceModal() {
+    setOccurrenceModalOpen(false);
+  }
+
   const handleNewTaskForm = (event) => {
     const {name, value} = event.target;
     setNewTaskData(prevNewTaskData => {
       return {
         ...prevNewTaskData,
+        [name]: value
+      }
+    })
+  }
+
+  const handleNewOccurrenceForm = (event) => {
+    const {name, value} = event.target;
+    setNewOccurrenceData(prevNewOccurrenceData => {
+      return {
+        ...prevNewOccurrenceData,
         [name]: value
       }
     })
@@ -282,7 +323,15 @@ function Team(props) {
       })
   }
 
-
+  const submitOccurrenceForm = async event => {
+    event.preventDefault();
+    await createNewOccurrence(newOccurrenceData)
+      .then(closeOccurrenceModal())
+      //.then(setNewOccurrenceData(newOccurrenceModel))
+      .catch(err => {
+        console.log("Erro ao criar ocorrência");
+      })
+  }
 
   return (
     <div className="team">
@@ -304,7 +353,7 @@ function Team(props) {
       </div>
       <br />
       {props.isManager() && <button className="btn-danger" onClick={removeTeam}>Excluir Time</button>}
-      {!props.isManager() && <button className="btn-primary">Ocorrência</button>}
+      {!props.isManager() && <button className="btn-primary" onClick={openOccurrenceModal}>Ocorrência</button>}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -362,6 +411,53 @@ function Team(props) {
             onChange={handleNewTaskForm}
             required
           />
+          <button className="btn-primary">Criar</button>
+        </form>
+      </Modal>
+      <Modal
+        isOpen={occurrenceModalOpen}
+        onRequestClose={closeOccurrenceModal}
+        contentLabel="Example Modal"
+        className="modal task-modal"
+        overlayClassName="overlay"
+      >
+        <span onClick={closeOccurrenceModal} className="close-btn"><i className="fas fa-times"></i></span>
+        <h3>Nova ocorrência</h3>
+        <form onSubmit={submitOccurrenceForm}>
+          <label>Descreva a ocorrência</label>
+          <textarea 
+            type="text"
+            name="description"
+            value={newOccurrenceData.description}
+            onChange={handleNewOccurrenceForm}
+            required
+          />
+          <label>Categoria</label>
+          <select
+            name="occurrenceType"
+            value={newOccurrenceData.occurrenceType}
+            onChange={handleNewOccurrenceForm}
+            required
+          >
+            <option value={OcurrenceType.Bug}>Bug</option>
+            <option value={OcurrenceType.GameDesignProblem}>Problema em Game Design</option>
+            <option value={OcurrenceType.DocumentationIssue}>Problema na Documentação</option>
+            <option value={OcurrenceType.PrototypeInconsistency}>Problema com os Protótipos</option>
+            <option value={OcurrenceType.TechProblem}>Problema Técnico</option>
+            <option value={OcurrenceType.Testing}>Testes Ineficazes</option>
+            <option value={OcurrenceType.DevToolsProblem}>Problema com as Ferramentas de Desenvolvimento</option>
+            <option value={OcurrenceType.MissCommunication}>Problema de Comunicação</option>
+            <option value={OcurrenceType.CrunchTime}>Crunch (Trabalho Excessivo)</option>
+            <option value={OcurrenceType.TeamConflict}>Conflitos na Equipe</option>
+            <option value={OcurrenceType.RemovedFeature}>Remoção de Funcionalidade</option>
+            <option value={OcurrenceType.UnexpectedFeature}>Nova Funcionalidade de Fora do Planejamento</option>
+            <option value={OcurrenceType.LowBudget}>Problema Financeiro</option>
+            <option value={OcurrenceType.MissPlaning}>Problema no Planejamento e Gestão do Projeto</option>
+            <option value={OcurrenceType.SecurityProblem}>Problema de Segurança</option>
+            <option value={OcurrenceType.PoorBuiltScope}>Problema com o Escopo do Projeto</option>
+            <option value={OcurrenceType.MarketingIssue}>Problema dom o Marketing</option>
+            <option value={OcurrenceType.MonetizationProblem}>Problema no Planejamento de Monetização</option>
+          </select>
           <button className="btn-primary">Criar</button>
         </form>
       </Modal>

@@ -18,7 +18,7 @@ h1 {
   height: fit-content;
 }
 
-.task-modal input {
+.task-modal input, select {
   border-radius: 5px;
   outline: 0;
   width: 100%;

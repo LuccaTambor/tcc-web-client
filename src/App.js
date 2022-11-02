@@ -38,7 +38,7 @@ function App() {
           <Route path="/desenvolvedores" element={<Developers />} />
           <Route path="/projetos" element={<Projects isManager={isManager} userData={userData}/>} />
           <Route path="/detalhes-projeto/:id" element={<ProjectDetails isManager={isManager} userData={userData} />}/>
-          <Route path="/time/:id" element={<Team isManager={isManager}/>} />
+          <Route path="/time/:id" element={<Team isManager={isManager} userId={userData.id} />} />
         </Routes>
       </BrowserRouter>
     </div>
