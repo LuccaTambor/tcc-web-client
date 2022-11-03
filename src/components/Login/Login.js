@@ -2,9 +2,12 @@ import React from "react";
 
 import './Login.css'
 import Logo from '../../assets/images/Logo.png';
+import { config } from '../../config/Constants.js'
+
+const URL = config.url.API_URL;
 
 async function loginUser(credentials) {
-  return fetch('/api/users/login', {
+  return fetch(URL +'/api/users/login', {
     method: "POST",
     body: JSON.stringify(credentials),
     headers: {

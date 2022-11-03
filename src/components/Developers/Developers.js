@@ -6,8 +6,12 @@ import './Developers.css'
 
 import Table from "../Table/Table";
 
+import { config } from "../../config/Constants.js";
+const URL = config.url.API_URL;
+
+
 async function createDev(newDev) {
-  return fetch('/api/users/CreateDeveloper', {
+  return fetch(URL + '/api/users/CreateDeveloper', {
     method: "POST",
     body: JSON.stringify(newDev),
     headers: {

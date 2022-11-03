@@ -11,8 +11,11 @@ import Task from '../Task/Task.js';
 
 import OcurrenceType from '../Enums/OccurrenceType.js';
 
+import { config } from "../../config/Constants.js";
+const URL = config.url.API_URL;
+
 async function getTeamData(teamId) {
-  return fetch('/api/teams/getTeam?teamId=' + teamId)
+  return fetch(URL + '/api/teams/getTeam?teamId=' + teamId)
     .then(data => data.json())
     .catch(err => {
       console.error(err);
@@ -20,7 +23,7 @@ async function getTeamData(teamId) {
 }
 
 async function getDataOfDevsNotOnTeam(teamId) {
-  return fetch('/api/users/getDevelopersNotOnTeam?teamId=' + teamId)
+  return fetch(URL + '/api/users/getDevelopersNotOnTeam?teamId=' + teamId)
     .then(data => data.json())
     .catch(err => {
       console.error(err);
@@ -28,7 +31,7 @@ async function getDataOfDevsNotOnTeam(teamId) {
 }
 
 async function addDevToTeam(devId, teamId) {
-  return fetch('/api/teams/addDevToTeam?devId='+ devId +'&teamId=' + teamId, {
+  return fetch(URL + '/api/teams/addDevToTeam?devId='+ devId +'&teamId=' + teamId, {
     method: "PUT",
   })
   .catch(err => {
@@ -37,7 +40,7 @@ async function addDevToTeam(devId, teamId) {
 }
 
 async function removeDevFromTeam(devId, teamId) {
-  return fetch('/api/teams/removeDevFromTeam?devId='+ devId +'&teamId=' + teamId, {
+  return fetch(URL + '/api/teams/removeDevFromTeam?devId='+ devId +'&teamId=' + teamId, {
     method: "PUT",
   })
   .catch(err => {
@@ -46,7 +49,7 @@ async function removeDevFromTeam(devId, teamId) {
 }
 
 async function deleteTeam (teamId) {
-  return fetch('/api/teams/deleteTeam?teamId=' + teamId, {
+  return fetch(URL + '/api/teams/deleteTeam?teamId=' + teamId, {
     method: "DELETE",
   })
   .catch(err => {
@@ -55,7 +58,7 @@ async function deleteTeam (teamId) {
 }
 
 async function createTask(newTask, teamId) {
-  return fetch('/api/tasks/createNewTask?teamId=' + teamId, {
+  return fetch(URL + '/api/tasks/createNewTask?teamId=' + teamId, {
     method: "POST",
     body: JSON.stringify(newTask),
     headers: {
@@ -69,7 +72,7 @@ async function createTask(newTask, teamId) {
 }
 
 async function getOnGoingTasks(teamId) {
-  return fetch('/api/tasks/getOnGoingTask?teamId=' + teamId)
+  return fetch(URL + '/api/tasks/getOnGoingTask?teamId=' + teamId)
     .then(data => data.json())
     .catch(err => {
       console.error(err);
@@ -77,7 +80,7 @@ async function getOnGoingTasks(teamId) {
 }
 
 async function markTaskAsFinished(taskId) {
-  return fetch('/api/tasks/markAsFinished?taskId=' + taskId, {
+  return fetch(URL + '/api/tasks/markAsFinished?taskId=' + taskId, {
     method: "PUT"
   })
     .then(data => data.json())
@@ -88,7 +91,7 @@ async function markTaskAsFinished(taskId) {
 
 async function createNewOccurrence(newOccurrence) {
   newOccurrence.occurrenceType = parseInt(newOccurrence.occurrenceType, 10)
-  return fetch('/api/occurrences/createOccurrence', {
+  return fetch(URL + '/api/occurrences/createOccurrence', {
     method: "POST",
     body: JSON.stringify(newOccurrence),
     headers: {

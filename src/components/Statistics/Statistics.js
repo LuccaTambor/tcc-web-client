@@ -9,8 +9,11 @@ import "./Statistics.css";
 
 import BarChart from "../Chart/BarChart.js";
 
+import { config } from "../../config/Constants.js";
+const URL = config.url.API_URL;
+
 async function getData(managerId) {
-  return fetch('/api/statistics/getStatistics?managerId=' + managerId)
+  return fetch(URL + '/api/statistics/getStatistics?managerId=' + managerId)
     .then(data => data.json())
     .catch(err => {
       console.error(err);

@@ -6,8 +6,11 @@ import './Projects.css'
 //components
 import ProjectCard from '../ProjectCard/ProjectCard.js';
 
+import { config } from "../../config/Constants.js";
+const URL = config.url.API_URL;
+
 async function getData(userId, isManager) {
-  let url = isManager ? '/api/projects/GetManagerProjects?id=' : '/api/projects/GetDevProjects?id='
+  let url = isManager ? URL + '/api/projects/GetManagerProjects?id=' : URL + '/api/projects/GetDevProjects?id='
 
   return fetch(url+ userId)
     .then(data => data.json())

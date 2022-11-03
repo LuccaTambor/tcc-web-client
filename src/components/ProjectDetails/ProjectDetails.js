@@ -6,8 +6,12 @@ import _ from "lodash";
 
 import './ProjectDetails.css';
 
+import { config } from "../../config/Constants.js";
+const URL = config.url.API_URL;
+
+
 async function getData(projId, isManager, userId) {
-  let url = isManager ? '/api/projects/getProject?id=' + projId : '/api/projects/getProjectAsDev?id='+projId+'&devId=' + userId;
+  let url = isManager ? URL + '/api/projects/getProject?id=' + projId : URL + '/api/projects/getProjectAsDev?id='+projId+'&devId=' + userId;
 
   return fetch(url)
     .then(data => data.json())
@@ -17,7 +21,7 @@ async function getData(projId, isManager, userId) {
 }
 
 async function createTeam(projectId, teamName) {
-  return fetch('/api/teams/createTeam?projectId='+ projectId +'&teamName=' + teamName, {
+  return fetch(URL + '/api/teams/createTeam?projectId='+ projectId +'&teamName=' + teamName, {
     method: "POST",
   })
   .catch(err => {
