@@ -37,23 +37,15 @@ function Statistics (props) {
     )
   })
 
-  const lastThirtyDays = [...new Array(30)].map((i, idx) => moment().startOf("day").subtract(idx, "days").format('DD/MM/YYYY'));
-  const lastData = [...new Array(30)].map((i, idx) => 1);
+  const lastThirtyDays = projectTagNames ? [...new Array(30)].map((i, idx) => moment().startOf("day").subtract(idx, "days").format('DD/MM/YYYY')) : null;
+  const lastData = projectTagNames ? [...new Array(30)].map((i, idx) => 1) : null;
+
+
+  // const test = _.groupBy(projectsStats[0].occurrences, (ocor) => {
+  //   return moment(ocor.date).format('DD/MM/YYYY')
+  // });
 
   
-  const test = _.groupBy(projectsStats[0].occurrences, (ocor) => {
-    return moment(ocor.date).format('DD/MM/YYYY')
-  });
-
-
-  // const dataFinal = _.map(test, day => {
-  //   console.log(day)
-  // })
-
-  var groups = {};
-
-
-  console.log(groups);
 
   const projectPanelContents = _.map(projectsStats, projStats => {
     return (

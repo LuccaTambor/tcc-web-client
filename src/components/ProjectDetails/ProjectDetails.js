@@ -1,5 +1,5 @@
 import React from "react";
-import {useParams, Link} from "react-router-dom";
+import {useParams, Link, useNavigate} from "react-router-dom";
 import Moment from 'react-moment';
 import Modal from 'react-modal';
 import _ from "lodash";
@@ -29,9 +29,18 @@ async function createTeam(projectId, teamName) {
   });
 }
 
+async function deleteProject(projectId) {
+  return fetch(URL + '/api/projects/removeProject?projId='+ projectId, {
+    method: "DELETE",
+  })
+  .catch(err => {
+    console.error(err);
+  });
+}
 Modal.setAppElement('#root');
 
 function ProjectDetails(props) {
+  const navigate = useNavigate();
   const {id} = useParams();
   const [projectData, setProjectData] = React.useState({});
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -87,6 +96,14 @@ function ProjectDetails(props) {
         console.log("Erro ao criar novo time");
     })
   }
+
+  const removeProj =  async () => {
+    await deleteProject(projectData.id)
+      .then(navigate("/projetos"))
+      .catch(err => {
+        console.log("Erro ao deletar projeto.");
+      })
+  }
   
   return (
     <div className="project-details">
@@ -100,6 +117,8 @@ function ProjectDetails(props) {
         </div>  
       </div>
       {props.isManager() && <div className="btn-primary" onClick={openModal}>Criar Time</div>}
+      <br />
+      {props.isManager() && <button className="btn-danger" onClick={removeProj}>Excluir Projeto</button>}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

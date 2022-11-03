@@ -17,3 +17,25 @@
 .project-cards {
   display: flex;
 }
+
+.newproj-modal {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  width: fit-content;
+  height: fit-content;
+}
+
+.newproj-modal input, select {
+  border-radius: 5px;
+  outline: 0;
+  width: 100%;
+  border: 1px solid lightgrey;
+  margin: 0 0 15px;
+  padding: 15px;
+  margin-right: 20px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.newproj-modal button {
+  width: 100%;
+}
