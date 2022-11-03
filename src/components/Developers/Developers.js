@@ -9,7 +9,6 @@ import Table from "../Table/Table";
 import { config } from "../../config/Constants.js";
 const URL = config.url.API_URL;
 
-
 async function createDev(newDev) {
   return fetch(URL + '/api/users/CreateDeveloper', {
     method: "POST",
@@ -22,6 +21,10 @@ async function createDev(newDev) {
   .catch(err => {
     console.error(err);
   });
+}
+
+async function getDevelopers() {
+  return fetch(URL + '/api/users/GetDevelopers')
 }
 
 Modal.setAppElement('#root');
@@ -42,7 +45,7 @@ function Developers(props){
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [newDevData, setNewDevData] = React.useState(newDeveloper)
   React.useEffect(() => {
-    fetch('/api/users/GetDevelopers')
+    getDevelopers()
       .then(response => response.json())
       .then(data => setDevelopersData(data));
   }, []);
