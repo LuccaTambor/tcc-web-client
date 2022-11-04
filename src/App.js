@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 //components
 import Login from "./components/Login/Login";
+
 import Navbar from "./components/Navbar/Navbar";
 import Developers from "./components/Developers/Developers";
 import Projects from "./components/Projects/Projects";
@@ -30,10 +31,16 @@ function App() {
     return <Login onSetData={handleUserData}/>
   }
 
+  const logOutUser = () => {
+    setNavToggled(false);
+    setUserData(null);
+  }
+
   return (
-    <div className={"container "  + (navToggled ? "toggled" : "")} id="main">
+    <div className="app">
       <BrowserRouter>
-      <Navbar handleToggle={onToggled} isManager={isManager}/>
+      <Navbar handleToggle={onToggled} isManager={isManager} toLogout={logOutUser}/>
+      <div className={"container "  + (navToggled ? "toggled" : "")}>
         <Routes>
           <Route path="/" />
           <Route path="/desenvolvedores" element={<Developers />} />
@@ -42,6 +49,7 @@ function App() {
           <Route path="/time/:id" element={<Team isManager={isManager} userId={userData.id} />} />
           <Route path="/estatisticas" element={<Statistics managerId={userData.id}/>} />
         </Routes>
+      </div>
       </BrowserRouter>
     </div>
   );

@@ -44,6 +44,13 @@ function Navbar(props) {
             </NavIcon>
             <NavText>OCORRÊNCIAS E DADOS</NavText>
           </NavItem>}
+          <hr />
+          <NavItem eventKey="" onClick={props.toLogout}>
+            <NavIcon>
+                <i className="fas fa-sign-out-alt" style={{ fontSize: '1.75em' }} />
+            </NavIcon>
+            <NavText>SAIR</NavText>
+          </NavItem>
         </SideNav.Nav>
       </SideNav>
   )
