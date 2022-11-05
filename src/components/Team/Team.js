@@ -3,6 +3,7 @@ import {useParams, useNavigate} from "react-router-dom";
 import _ from "lodash";
 import Modal from 'react-modal';
 import moment from 'moment';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import './Team.css';
 
@@ -71,7 +72,7 @@ async function createTask(newTask, teamId) {
   });
 }
 
-async function getOnGoingTasks(teamId) {
+async function getTasks(teamId) {
   return fetch(URL + '/api/tasks/getOnGoingTask?teamId=' + teamId)
     .then(data => data.json())
     .catch(err => {
@@ -127,7 +128,7 @@ function Team(props) {
   const [occurrenceModalOpen, setOccurrenceModalOpen] = React.useState(false);
   const [newTaskData, setNewTaskData] = React.useState(newTaskModel)
   const [newOccurrenceData, setNewOccurrenceData] = React.useState(newOccurrenceModel);
-  const [onGoingTasks, setOnGoingTasks] = React.useState({});
+  const [tasksData, setTasksData] = React.useState({});
 
   React.useEffect(() => {
     getTeamData(id)
@@ -146,16 +147,16 @@ function Team(props) {
   },[id])
 
   React.useEffect(() => {
-    getOnGoingTasks(id)
-    .then(data => setOnGoingTasks(data))
+    getTasks(id)
+    .then(data => setTasksData(data))
     .catch(err => {
       console.log("Erro ao carregar tarefas do time");
     })
   },[id])
 
   const updateTasks = () => {
-    getOnGoingTasks(id)
-    .then(data => setOnGoingTasks(data))
+    getTasks(id)
+    .then(data => setTasksData(data))
     .catch(err => {
       console.log("Erro ao carregar tarefas do time");
     })
@@ -186,9 +187,34 @@ function Team(props) {
     })
   }
 
-  const tasks = _.map(onGoingTasks, (task) => {
+
+  const onGoingTasks= _.filter(tasksData, (task) => {
+    return task.startedOn != null && task.finishedOn == null;
+  })
+
+  const pendingTasks= _.filter(tasksData, (task) => {
+    return task.startedOn == null && task.finishedOn == null;
+  })
+
+  const finishedTasks= _.filter(tasksData, (task) => {
+    return task.startedOn != null && task.finishedOn != null;
+  })
+
+  const onGoingTasksCards = _.map(onGoingTasks, (task) => {
     return (
-      <Task taskData={task} handleFinish={markAsFinished} isManager={props.isManager}/>
+      <Task taskData={task} handleFinish={markAsFinished} isManager={props.isManager} key={task.id}/>
+    )
+  })
+
+  const pedingTasksCards = _.map(pendingTasks, (task) => {
+    return (
+      <Task taskData={task} handleFinish={markAsFinished} isManager={props.isManager} key={task.id}/>
+    )
+  })
+
+  const finishedTasksCards = _.map(finishedTasks, (task) => {
+    return (
+      <Task taskData={task} handleFinish={markAsFinished} isManager={props.isManager} key={task.id}/>
     )
   })
 
@@ -348,10 +374,31 @@ function Team(props) {
       </div>}
       <br />
       <div className="tasks">
-        <h3>Tarefas em andamento:</h3>
-        <div className="tasks-section">
-          {tasks}
-        </div>
+        <h2>Tarefas</h2>
+        <Tabs>
+          <TabList>
+            <Tab>Pendentes</Tab>
+            <Tab>Em andamento</Tab>
+            <Tab>Concluídas</Tab>
+          </TabList>
+
+          <TabPanel>
+            <div className="tasks-section">
+              {pedingTasksCards}
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div className="tasks-section">
+              {onGoingTasksCards} 
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div className="tasks-section">
+              {finishedTasksCards}    
+            </div>      
+          </TabPanel>
+        </Tabs>
+        
         {props.isManager() && <button className="btn-primary" onClick={openTaskModal}>Criar Tarefa</button>}
       </div>
       <br />

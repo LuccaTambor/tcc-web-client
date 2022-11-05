@@ -111,6 +111,7 @@ function Projects(props) {
         <span onClick={closeModal} className="close-btn"><i className="fas fa-times"></i></span>
         <h3>Novo Projeto</h3>
         <form onSubmit={submitProjectForm}>
+          <label>Nome do projeto</label>
           <input 
             type="text"
             placeholder="descrição do projeto"
@@ -118,12 +119,14 @@ function Projects(props) {
             name="description"
             onChange={handleNewProjectForm}
           />
+          <label>Data de início</label>
           <input 
             type="date"
             value={newProjData.startedOn}
             name="startedOn"
             onChange={handleNewProjectForm}
           />
+          <label>Entrega esperada em</label>
           <input 
             type="date"
             value={newProjData.expectedFinishDate}

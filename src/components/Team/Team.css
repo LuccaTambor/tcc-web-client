@@ -49,5 +49,28 @@ h1 {
 }
 
 .tasks-section {
-  display: flex;
+  display: grid;
+  grid-template-columns: 320px 320px 320px 320px;
+  grid-row-gap: 20px;
+}
+
+@media (max-width:1700px) {
+  .tasks-section {
+    grid-template-columns: 320px 320px 320px;
+  }
+
+}
+
+@media (max-width:1300px) {
+  .tasks-section {
+    grid-template-columns: 320px 320px;
+  }
+
+}
+
+@media (max-width:950px) {
+  .tasks-section {
+    grid-template-columns: 320px;
+  }
+
 }
