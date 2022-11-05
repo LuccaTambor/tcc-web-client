@@ -54,6 +54,12 @@ h1 {
   grid-row-gap: 20px;
 }
 
+.no-task {
+  color: var(--primaryColor);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
 @media (max-width:1700px) {
   .tasks-section {
     grid-template-columns: 320px 320px 320px;

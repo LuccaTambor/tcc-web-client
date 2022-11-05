@@ -15,7 +15,8 @@
 }
 
 .project-cards {
-  display: flex;
+  display: grid;
+  grid-template-columns: 620px 620px;
 }
 
 .newproj-modal {
@@ -38,4 +39,23 @@
 
 .newproj-modal button {
   width: 100%;
+}
+
+@media (max-width:1570px) {
+  .project-cards {
+    grid-template-columns: 420px 420px 420px;
+  }
+
+}
+
+@media (max-width:1400px) {
+  .project-cards {
+    grid-template-columns: 420px 420px;
+  }
+}
+
+@media (max-width:1150px) {
+  .project-cards {
+    grid-template-columns: 420px;
+  }
 }

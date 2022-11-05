@@ -34,6 +34,15 @@ async function createProject(newProj) {
   });
 }
 
+async function deleteProject(projectId) {
+  return fetch(URL + '/api/projects/removeProject?projId='+ projectId, {
+    method: "DELETE",
+  })
+  .catch(err => {
+    console.error(err);
+  });
+}
+
 function Projects(props) {
   const userId = props.userData?.id;
   const newProjectModel = {
@@ -47,6 +56,14 @@ function Projects(props) {
   const [projectModalOpen, setProjectModalOpen] = React.useState(false);
   const [newProjData, setNewProjData] = React.useState(newProjectModel);
 
+  const refreshProjects = () => {
+    getData(userId, props.isManager())
+      .then(data => setProjectsData(data))
+      .catch(err => {
+        console.log("Erro ao carregar dados dos projetos.");
+      });
+  }
+
   React.useEffect(() => {
     getData(userId, props.isManager())
     .then(data => setProjectsData(data))
@@ -55,11 +72,19 @@ function Projects(props) {
     })
   },[userId, props])
 
+  const removeProj =  async (id) => {
+    await deleteProject(id)
+      .then(refreshProjects)
+      .catch(err => {
+        console.log("Erro ao deletar projeto.");
+      })
+  }
+
   const projects = {...projectsData};
 
   const projectsDescriptions = _.map(projects, (proj, i) => {
     return (
-        <ProjectCard projectData={proj} key={i}/>
+        <ProjectCard projectData={proj} key={i} toDelete={removeProj} isManager={props.isManager}/>
     );
   });
 
@@ -133,7 +158,7 @@ function Projects(props) {
             name="expectedFinishDate"
             onChange={handleNewProjectForm}
           />
-          <button className="btn-primary">Criar</button>
+          <button className="btn-create">Criar</button>
         </form>
       </Modal>
     </div>

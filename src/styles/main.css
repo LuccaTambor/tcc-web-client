@@ -134,3 +134,44 @@ body, .root {
   bottom: 0;
   background-color: rgba(124, 124, 124, 0.4);
 }
+
+.btn-create {
+  align-items: center;
+  background-clip: padding-box;
+  background-color: rgb(67, 202, 85);
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  margin: 0;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
+  margin-top: 1rem;
+}
+
+.btn-create:hover,
+.btn-create:focus {
+  background-color:rgb(47, 226, 71);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.btn-create:active {
+  background-color: rgb(47, 226, 71);
+  box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+}

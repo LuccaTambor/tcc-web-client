@@ -1,5 +1,5 @@
 import React from "react";
-import {useParams, Link, useNavigate} from "react-router-dom";
+import {useParams, Link} from "react-router-dom";
 import Moment from 'react-moment';
 import Modal from 'react-modal';
 import _ from "lodash";
@@ -20,6 +20,15 @@ async function getData(projId, isManager, userId) {
     });
 }
 
+async function deleteTeam (teamId) {
+  return fetch(URL + '/api/teams/deleteTeam?teamId=' + teamId, {
+    method: "DELETE",
+  })
+  .catch(err => {
+    console.error(err);
+  });
+}
+
 async function createTeam(projectId, teamName) {
   return fetch(URL + '/api/teams/createTeam?projectId='+ projectId +'&teamName=' + teamName, {
     method: "POST",
@@ -29,18 +38,9 @@ async function createTeam(projectId, teamName) {
   });
 }
 
-async function deleteProject(projectId) {
-  return fetch(URL + '/api/projects/removeProject?projId='+ projectId, {
-    method: "DELETE",
-  })
-  .catch(err => {
-    console.error(err);
-  });
-}
 Modal.setAppElement('#root');
 
 function ProjectDetails(props) {
-  const navigate = useNavigate();
   const {id} = useParams();
   const [projectData, setProjectData] = React.useState({});
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -56,17 +56,41 @@ function ProjectDetails(props) {
       })
   },[id, props])
 
-  const teams = _.map(projectData.teams, team => {
+  const updateProjectData =  async () => {
+    getData(id, props.isManager(), props.userData.id)
+    .then(data => setProjectData(data))
+    .catch(err => {
+        console.log("Erro ao carregar dados dos projetos.");
+    })
+  }
+
+  const removeTeam = async (teamId) => {
+    await deleteTeam(teamId)
+    .then(updateProjectData)
+    .catch(err => {
+      console.log("Erro ao deletar time");
+    })
+  }
+
+  console.log(projectData)
+
+  const teams = projectData ? _.map(projectData.teams, team => {
     const teamUrl = "/time/" + team.id;
 
-    return (
-      <Link key={team.id} to={teamUrl} className="team-link">
-        <div className="team-card">
+    return (   
+        <div className="team-card" key={team.id}>
           <h2>{team.teamName}</h2>
+          <div className="team-info">
+            <p>Membros: {team?.developers?.length}</p>
+            <p>Tarefas em andamento: {team.taskNum}</p>
+          </div>
+          <div className="delete-section">    
+            <Link to={teamUrl} className="btn-primary">Detalhes</Link> 
+            {props.isManager() && <button className="btn-danger" onClick={() => {removeTeam(team.id)}}><i className="fas fa-trash"></i></button>}
+          </div>
         </div>
-      </Link> 
     )
-  });
+  }) : null;
 
   //modal functions
   function openModal() {
@@ -91,18 +115,11 @@ function ProjectDetails(props) {
     event.preventDefault();
     await createTeam(projectData.id, newTeamForm.teamName)
       .then(closeModal())
+      .then(updateProjectData)
       .then(setNewTeamForm({teamName:""}))
       .catch(err => {
         console.log("Erro ao criar novo time");
     })
-  }
-
-  const removeProj =  async () => {
-    await deleteProject(projectData.id)
-      .then(navigate("/projetos"))
-      .catch(err => {
-        console.log("Erro ao deletar projeto.");
-      })
   }
   
   return (
@@ -118,7 +135,6 @@ function ProjectDetails(props) {
       </div>
       {props.isManager() && <div className="btn-primary" onClick={openModal}>Criar Time</div>}
       <br />
-      {props.isManager() && <button className="btn-danger" onClick={removeProj}>Excluir Projeto</button>}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -136,7 +152,7 @@ function ProjectDetails(props) {
             name="teamName"
             onChange={handleNewTeamForm}
           />
-          <button className="btn-primary">Criar</button>
+          <button className="btn-create">Criar</button>
         </form>
       </Modal>
     </div>

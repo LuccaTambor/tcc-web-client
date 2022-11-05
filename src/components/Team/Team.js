@@ -1,5 +1,5 @@
 import React from "react";
-import {useParams, useNavigate} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import _ from "lodash";
 import Modal from 'react-modal';
 import moment from 'moment';
@@ -49,15 +49,6 @@ async function removeDevFromTeam(devId, teamId) {
   });
 }
 
-async function deleteTeam (teamId) {
-  return fetch(URL + '/api/teams/deleteTeam?teamId=' + teamId, {
-    method: "DELETE",
-  })
-  .catch(err => {
-    console.error(err);
-  });
-}
-
 async function createTask(newTask, teamId) {
   return fetch(URL + '/api/tasks/createNewTask?teamId=' + teamId, {
     method: "POST",
@@ -84,7 +75,15 @@ async function markTaskAsFinished(taskId) {
   return fetch(URL + '/api/tasks/markAsFinished?taskId=' + taskId, {
     method: "PUT"
   })
-    .then(data => data.json())
+    .catch(err => {
+      console.error(err);
+    });
+}
+
+async function markAsStarted(taskId) {
+  return fetch(URL + '/api/tasks/markAsStarted?taskId=' + taskId, {
+    method: "PUT"
+  })
     .catch(err => {
       console.error(err);
     });
@@ -105,7 +104,6 @@ async function createNewOccurrence(newOccurrence) {
 Modal.setAppElement('#root');
 
 function Team(props) {
-  const navigate = useNavigate();
   const {id} = useParams();
   const newTaskModel = {
     code: 0,
@@ -162,14 +160,14 @@ function Team(props) {
     })
   }
 
-  const devs = _.map(teamData.developers, (dev,i) => {
+  const devs = teamData ? _.map(teamData.developers, (dev,i) => {
     return {
       id: dev.id,
       name: dev.name,
       document: dev.document,
       function: dev.function,
     }
-  });
+  }): null;
 
   const devsNotOnTeamData = _.map(devsNotOnTeam, (dev) => {
     return {
@@ -187,6 +185,13 @@ function Team(props) {
     })
   }
 
+  function startTask (taskId) {
+    markAsStarted(taskId)
+    .then(updateTasks)
+    .catch(err => {
+      console.log("Erro ao iniciar tarefa");
+    })
+  }
 
   const onGoingTasks= _.filter(tasksData, (task) => {
     return task.startedOn != null && task.finishedOn == null;
@@ -202,19 +207,19 @@ function Team(props) {
 
   const onGoingTasksCards = _.map(onGoingTasks, (task) => {
     return (
-      <Task taskData={task} handleFinish={markAsFinished} isManager={props.isManager} key={task.id}/>
+      <Task taskData={task} status={1} handleFinish={markAsFinished} isManager={props.isManager} key={task.id}/>
     )
   })
 
   const pedingTasksCards = _.map(pendingTasks, (task) => {
     return (
-      <Task taskData={task} handleFinish={markAsFinished} isManager={props.isManager} key={task.id}/>
+      <Task taskData={task} status={0} handleStart={startTask} isManager={props.isManager} key={task.id}/>
     )
   })
 
   const finishedTasksCards = _.map(finishedTasks, (task) => {
     return (
-      <Task taskData={task} handleFinish={markAsFinished} isManager={props.isManager} key={task.id}/>
+      <Task taskData={task} status={2} handleFinish={markAsFinished} isManager={props.isManager} key={task.id}/>
     )
   })
 
@@ -241,14 +246,6 @@ function Team(props) {
     .then(closeModal())
     .catch(err => {
       console.log("Erro ao remover dev ao time");
-    })
-  }
-
-  const removeTeam = async () => {
-    await deleteTeam(id)
-    .then(navigate(-1))
-    .catch(err => {
-      console.log("Erro ao deletar time");
     })
   }
 
@@ -345,6 +342,7 @@ function Team(props) {
   const submitTaskForm = async event => {
     event.preventDefault();
     await createTask(newTaskData, id)
+      .then(updateTasks)
       .then(closeTaskModal())
       .then(setNewTaskData(newTaskModel))
       .catch(err => {
@@ -364,11 +362,11 @@ function Team(props) {
 
   return (
     <div className="team">
-      <h1> {teamData.project} / {teamData.teamName}</h1>
+      <h1> {teamData?.project} / {teamData?.teamName}</h1>
       {props.isManager() && <div>
         <div className="dev-tables">
           <h3>Membros do time</h3>
-          {devs.length >= 1 && <Table columns={columns} data={devs} />}
+          {devs?.length >= 1 && <Table columns={columns} data={devs} />}
         </div>
         <button className="btn-primary" onClick={openModal}>Adicionar ao time</button>  
       </div>}
@@ -383,18 +381,21 @@ function Team(props) {
           </TabList>
 
           <TabPanel>
+            {pedingTasksCards.length === 0 && <p className="no-task">Nenhuma tarefa pendente no momento</p>}
             <div className="tasks-section">
-              {pedingTasksCards}
+              {pedingTasksCards} 
             </div>
           </TabPanel>
           <TabPanel>
+            {onGoingTasksCards.length === 0 && <p className="no-task">Nenhuma tarefa em andamento</p>}
             <div className="tasks-section">
               {onGoingTasksCards} 
             </div>
           </TabPanel>
           <TabPanel>
+            {finishedTasksCards.length === 0 && <p className="no-task">Nenhuma tarefa concluída até o momento</p>}  
             <div className="tasks-section">
-              {finishedTasksCards}    
+              {finishedTasksCards} 
             </div>      
           </TabPanel>
         </Tabs>
@@ -402,7 +403,6 @@ function Team(props) {
         {props.isManager() && <button className="btn-primary" onClick={openTaskModal}>Criar Tarefa</button>}
       </div>
       <br />
-      {props.isManager() && <button className="btn-danger" onClick={removeTeam}>Excluir Time</button>}
       {!props.isManager() && <button className="btn-primary" onClick={openOccurrenceModal}>Ocorrência</button>}
       <Modal
         isOpen={modalIsOpen}
@@ -461,7 +461,7 @@ function Team(props) {
             onChange={handleNewTaskForm}
             required
           />
-          <button className="btn-primary">Criar</button>
+          <button className="btn-create">Criar</button>
         </form>
       </Modal>
       <Modal
@@ -508,7 +508,7 @@ function Team(props) {
             <option value={OcurrenceType.MarketingIssue}>Problema com o Marketing</option>
             <option value={OcurrenceType.MonetizationProblem}>Problema no Planejamento de Monetização</option>
           </select>
-          <button className="btn-primary">Criar</button>
+          <button className="btn-create">Criar</button>
         </form>
       </Modal>
     </div>

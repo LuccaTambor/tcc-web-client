@@ -22,7 +22,7 @@ function ProjectCard(props) {
   }
 
   return (
-    <Link to={projectDetailsUrl} className="project-card">
+    <div className="project-card">
       <div className="project-card-preview">
         <h6>Projeto</h6>
         <h2>{props.projectData.description}</h2>
@@ -33,11 +33,16 @@ function ProjectCard(props) {
           <h3>Prazo final: <Moment format="DD/MM/YYYY">{props.projectData.expectedFinishDate}</Moment></h3>
         </div>
         <div className="main-info">
-          <h3>Times: {props.projectData.teams.length}</h3>
+          <h3>Nº Times: {props.projectData.teams.length}</h3>
           <h3>Status: {status(props.projectData.expectedFinishDate, props.projectData.startedOn)}</h3>
+          <div className="buttons-section">   
+            <Link to={projectDetailsUrl} className="btn-primary">Detalhes</Link>
+            {props.isManager() && <button className="btn-danger" onClick={() => props.toDelete(props.projectData.id)}><i className="fas fa-trash"></i></button>}  
+          </div>
+          
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
 
