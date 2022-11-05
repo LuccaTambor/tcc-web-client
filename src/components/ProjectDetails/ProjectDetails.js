@@ -6,6 +6,8 @@ import _ from "lodash";
 
 import './ProjectDetails.css';
 
+import Table from '../Table/Table.js';
+
 import { config } from "../../config/Constants.js";
 const URL = config.url.API_URL;
 
@@ -38,12 +40,21 @@ async function createTeam(projectId, teamName) {
   });
 }
 
+async function getOccurrencesFromProject(projectId) {
+  return fetch(URL + '/api/occurrences/getOccurrences?projId=' + projectId)
+    .then(data => data.json())
+    .catch(err => {
+      console.log(err);
+    })
+}
+
 Modal.setAppElement('#root');
 
 function ProjectDetails(props) {
   const {id} = useParams();
   const [projectData, setProjectData] = React.useState({});
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [occurrencesData, setOccurrencesData] = React.useState({});
   const [newTeamForm, setNewTeamForm] = React.useState({
     teamName: ""
   });
@@ -55,6 +66,14 @@ function ProjectDetails(props) {
         console.log("Erro ao carregar dados dos projetos.");
       })
   },[id, props])
+
+  React.useEffect(() => {
+    getOccurrencesFromProject(id)
+      .then(data => setOccurrencesData(data))
+      .catch(err => {
+        console.log("Erro ao carregar ocorrências do projeto.");
+      })
+  },[id])
 
   const updateProjectData =  async () => {
     getData(id, props.isManager(), props.userData.id)
@@ -71,8 +90,6 @@ function ProjectDetails(props) {
       console.log("Erro ao deletar time");
     })
   }
-
-  console.log(projectData)
 
   const teams = projectData ? _.map(projectData.teams, team => {
     const teamUrl = "/time/" + team.id;
@@ -121,7 +138,31 @@ function ProjectDetails(props) {
         console.log("Erro ao criar novo time");
     })
   }
-  
+
+  const occurrenceColumns =
+  [
+    {
+      Header: 'Data',
+      accessor: 'date'
+    },
+    {
+      Header: 'Categoria',
+      accessor: 'typeText',
+    },
+    {
+      Header: "Relator",
+      accessor: "developer"
+    },
+    {
+      Header: "Detalhes",
+      Cell: row => (
+        <button className="desc-btn" title="Detalhes da ocorrência"> 
+          <i className="fas fa-list"></i>
+        </button>
+      )
+    }
+  ];
+
   return (
     <div className="project-details">
       <h1 className="project-title">{projectData.description}</h1>
@@ -132,9 +173,18 @@ function ProjectDetails(props) {
         <div className="list-teams">
           {teams} 
         </div>  
+        {props.isManager() && <div className="btn-primary" onClick={openModal}>Criar Time</div>}
       </div>
-      {props.isManager() && <div className="btn-primary" onClick={openModal}>Criar Time</div>}
       <br />
+      {props.isManager() && 
+        <div className="occurrences-section">
+          <h2>Ocorrências no Projeto</h2>
+          <p>Ocorrências relatadas ao longo do projeto: <b>{projectData.occurrencesInProject}</b></p>
+          <div className="occurrences-table">
+            {occurrencesData.length > 0 && <Table columns={occurrenceColumns} data={occurrencesData} />}
+          </div>
+        </div>
+      }
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

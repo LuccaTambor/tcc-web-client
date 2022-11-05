@@ -82,6 +82,20 @@ table td:nth-child(4) {
 .add-btn:hover{
 	background-color: rgb(56, 189, 56);
 }
+
+.desc-btn {
+	background-color: var(--secondaryColor);
+	border: none;
+	border-radius: 5px;
+	height: 40px;
+	width: 40px;
+	cursor: pointer;
+	color: white;
+}
+
+.desc-btn:hover{
+	background-color: var(--primaryColor);
+}
 /* 
 Max width before this PARTICULAR table gets nasty
 This query will take effect for any screen smaller than 760px
