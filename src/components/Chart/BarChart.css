@@ -1,3 +1,16 @@
 .my-chart {
-  width: 70%;
+  width: 100%;
+}
+
+.my-pie-chart {
+ width: 50%;
+ margin-left: 30%;
+}
+
+@media (max-width:1300px) {
+  .my-pie-chart {
+    width: 80%;
+    text-align: right;
+    margin-left: 0%;
+  }
 }

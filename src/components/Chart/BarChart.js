@@ -1,6 +1,6 @@
 import React from "react";
 import {ChartJs as Chart} from 'chart.js/auto'
-import { Bar } from 'react-chartjs-2';
+import { Bar  } from 'react-chartjs-2';
 
 import "./BarChart.css";
 
@@ -10,8 +10,8 @@ function BarChart(props) {
     labels: labels,
     datasets: [
       {
-        label: "Ocorrências no dia",
-        backgroundColor: "rgb(150, 116, 201)",
+        label: "Ocorrências no mês",
+        backgroundColor: "rgba(150, 116, 201, 0.7)",
         borderColor: "rgb(255, 99, 132)",
         data: props.myData,
       },
@@ -19,7 +19,7 @@ function BarChart(props) {
   };
   return (
     <div className="my-chart">
-      <Bar data={data} />
+      <Bar data={data}/>
     </div>
   );
 
