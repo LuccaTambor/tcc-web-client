@@ -174,4 +174,22 @@ body, .root {
 .btn-create:active {
   background-color: rgb(47, 226, 71);
   box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+} 
+
+
+.loader-cointainer {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.loader {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
 }

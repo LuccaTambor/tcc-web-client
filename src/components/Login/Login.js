@@ -15,13 +15,16 @@ async function loginUser(credentials) {
       'Content-Type': 'application/json'
     }
   })
-    .then(data => data.json())
-    .catch(err => {
-      console.error(err);
-    });
+    .then((res) => {
+      if (res.status === 400) {
+        throw new Error('Error in login');
+      }
+      return res.json();
+    })
 }
 
 function Login(props) {
+  const [failedLogin, setFailedLogin] =  React.useState(false);
   const [loginForm, setLoginForm] = React.useState({
     userName: "",
     password: "",
@@ -39,10 +42,15 @@ function Login(props) {
 
   const handleSubmit = async e => {
     e.preventDefault();
-   await loginUser(loginForm)
+    props.loader.start();
+    setFailedLogin(false)
+    await loginUser(loginForm)
       .then(token => props.onSetData(token))
+      .then(props.loader.end)
       .catch(err => {
         console.log("Erro ao logar");
+        setFailedLogin(true);
+        props.loader.end()
       })
   }
 
@@ -66,8 +74,9 @@ function Login(props) {
             name="password"
             onChange={handleLoginForm}
             required
-          />
+          />      
           <button>Entrar</button>
+          {failedLogin && <p className="warning">Usuário ou senha incorretos</p>}
         </form>
       </div>
     </div>  

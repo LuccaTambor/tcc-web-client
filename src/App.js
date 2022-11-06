@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import ReactLoading from 'react-loading';
 
 //components
 import Login from "./components/Login/Login";
@@ -14,6 +15,20 @@ import Statistics from "./components/Statistics/Statistics";
 function App() {
   const [userData, setUserData] = React.useState();
   const [navToggled, setNavToggled] = React.useState(false);
+  const [isLoading, setIsLoading] =  React.useState(false);
+
+  const startLoading = () => {
+    setIsLoading(true);
+  }
+
+  const endLoading = () => {
+    setIsLoading(false);
+  }
+
+  const loader = {
+    start: startLoading,
+    end: endLoading
+  }
 
   const onToggled = () => {
     setNavToggled(prevNavToggled => !prevNavToggled);
@@ -27,8 +42,17 @@ function App() {
     return userData.hasOwnProperty("projects");
   };
 
+
   if(!userData) {
-    return <Login onSetData={handleUserData}/>
+    return (
+    <div className="">
+      {isLoading && 
+      <div className="loader-cointainer">
+        <ReactLoading type="spin" color="#7A4EBB" className="loader"/>
+      </div>}
+      <Login onSetData={handleUserData} loader={loader}/>
+    </div>
+    )
   }
 
   const logOutUser = () => {

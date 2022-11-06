@@ -39,6 +39,7 @@
 }
 
 .login-form button {
+  margin-bottom: 20px;
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
@@ -57,4 +58,12 @@
 .login-form button:hover,.login-form button:active,.login-form button:focus {
   transition-delay: 10ms;
   background: #9674c9;
+}
+
+.warning {
+  padding: 0;
+  margin: 0;
+  color: red;
+  font-family: 'Roboto';
+  font-weight: bold;
 }
