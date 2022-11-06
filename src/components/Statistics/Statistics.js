@@ -85,6 +85,9 @@ function Statistics (props) {
 
     const teamPanels = _.map(groupedByTeam, teamOccurrences => {
       
+      teamOccurrences.sort(function(a,b){
+        return new Date(b.createdOn) - new Date(a.createdOn);
+      });
 
       const occurrenceColumns =
       [
