@@ -4,7 +4,7 @@ import ReactLoading from 'react-loading';
 
 //components
 import Login from "./components/Login/Login";
-
+import Home from "./components/Home/Home";
 import Navbar from "./components/Navbar/Navbar";
 import Developers from "./components/Developers/Developers";
 import Projects from "./components/Projects/Projects";
@@ -66,7 +66,7 @@ function App() {
       <Navbar handleToggle={onToggled} isManager={isManager} toLogout={logOutUser}/>
       <div className={"container "  + (navToggled ? "toggled" : "")}>
         <Routes>
-          <Route path="/" />
+          <Route path="/" element={<Home userData={userData} isManager={isManager}/>}/>
           <Route path="/desenvolvedores" element={<Developers />} />
           <Route path="/projetos" element={<Projects isManager={isManager} userData={userData}/>} />
           <Route path="/detalhes-projeto/:id" element={<ProjectDetails isManager={isManager} userData={userData} />}/>
