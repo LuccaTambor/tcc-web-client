@@ -54,7 +54,9 @@ function ProjectDetails(props) {
   const {id} = useParams();
   const [projectData, setProjectData] = React.useState({});
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [occurrenceDetaisOpen, setOccurrenceDetailsOpen] =  React.useState(false);
   const [occurrencesData, setOccurrencesData] = React.useState({});
+  const [occurreceDetaisText, setOccurreceDetaisText] = React.useState("");
   const [newTeamForm, setNewTeamForm] = React.useState({
     teamName: ""
   });
@@ -118,6 +120,17 @@ function ProjectDetails(props) {
     setIsOpen(false);
   }
 
+  //modal functions
+  function openOccurrenceDeatilsModal(detailsText) {
+    setOccurreceDetaisText(detailsText);
+    setOccurrenceDetailsOpen(true);
+  }
+
+  function closeOccurrenceDeatilsModal() {
+    setOccurrenceDetailsOpen(false);
+    setOccurreceDetaisText("");
+  }
+
   const handleNewTeamForm = (event) => {
     const {name, value} = event.target;
     setNewTeamForm(prevLoginForm => {
@@ -156,7 +169,7 @@ function ProjectDetails(props) {
     {
       Header: "Detalhes",
       Cell: row => (
-        <button className="desc-btn" title="Detalhes da ocorrência"> 
+        <button className="desc-btn" title="Detalhes da ocorrência" onClick={e => openOccurrenceDeatilsModal(row.row.original.description)}> 
           <i className="fas fa-list"></i>
         </button>
       )
@@ -204,6 +217,21 @@ function ProjectDetails(props) {
           />
           <button className="btn-create">Criar</button>
         </form>
+      </Modal>
+      <Modal
+        isOpen={occurrenceDetaisOpen}
+        onRequestClose={closeOccurrenceDeatilsModal}
+        contentLabel="Example Modal"
+        className="modal occurrence-details-modal"
+        overlayClassName="overlay"
+      >
+        <span onClick={closeOccurrenceDeatilsModal} className="close-btn"><i className="fas fa-times"></i></span>
+        <h3>Detalhes da ocorrência</h3>
+        <textarea 
+          type="text"
+          readOnly
+          value={occurreceDetaisText}
+        />
       </Modal>
     </div>
   )
