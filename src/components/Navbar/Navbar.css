@@ -8,3 +8,27 @@
 .my-navbar hr {
   border: 1px solid rgba(255, 255, 255, 0.377);
 }
+
+.logout-modal {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 400px;
+  padding: 60px;
+  text-align: center;
+}
+
+.logout-modal .btns-sec {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.logout-modal .btns-sec i{
+  padding-top: 3px;
+  margin-left: 10px;
+}
+
+@media (max-width: 900px) {
+  .logout-modal {
+    width: 40%;
+  }
+  
+}
