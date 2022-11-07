@@ -197,7 +197,7 @@ function Developers(props){
             name="function"
             required
           />
-          <button className="btn-primary btn-save">Criar</button>
+          <button className="btn-create btn-save">Criar</button>
         </form>
       </Modal>
     </div>
