@@ -1,7 +1,7 @@
 import React from "react";
 
 import './Login.css'
-//import Logo from '../../assets/images/Logo.png';
+import Logo from './Logo.png';
 import { config } from '../../config/Constants.js'
 
 const URL = config.url.API_URL;
@@ -57,7 +57,7 @@ function Login(props) {
   return (
     <div className="login-page">
       <div className="login-form">
-        <img alt="log" src='../../assets/images/Logo.png' className="logo"/>
+        <img alt="log" src={Logo} className="logo"/>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
