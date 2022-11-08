@@ -193,3 +193,27 @@ body, .root {
   transform: translate(-50%, -50%);
   z-index: 1001;
 }
+
+.warning-modal {
+  height: fit-content;
+  width: fit-content;
+}
+
+.warning-modal .warning {
+  text-align: center;
+  color: black;
+}
+
+.warning-modal .warning .warning-icon{
+  color: white;
+  background-color: rgb(209, 76, 76);
+  font-size: 4rem;
+  padding: 8px 25px;
+  border-radius: 100%;
+}
+
+.warning-modal .warning .warning-text{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-top: 40px;
+}
