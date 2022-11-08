@@ -1,6 +1,6 @@
 import React from "react";
 import SideNav, {Toggle, NavItem, NavIcon, NavText} from "@trendmicro/react-sidenav";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import Modal from 'react-modal';
 
 import './Navbar.css';
@@ -76,7 +76,7 @@ function Navbar(props) {
         <span onClick={closeLogouModal} className="close-btn"><i className="fas fa-times"></i></span>
         <h3>Deseja realmente sair?</h3>
         <div className="btns-sec">
-          <button className="btn-create" onClick={props.toLogout}>Sim</button>
+          <Link className="btn-create" onClick={props.toLogout} to="/">Sim</Link>
           <button className="btn-danger" onClick={closeLogouModal}>Não</button>
         </div>
       </Modal>
