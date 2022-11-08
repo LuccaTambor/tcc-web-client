@@ -1,6 +1,6 @@
 const prod = {
   url: {
-   API_URL: 'https://tcc-web-api.azurewebsites.net',
+   API_URL: 'https://gpmaa-web-api.azurewebsites.net',
   }
  };
 
