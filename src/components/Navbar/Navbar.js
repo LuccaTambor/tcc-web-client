@@ -76,8 +76,8 @@ function Navbar(props) {
         <span onClick={closeLogouModal} className="close-btn"><i className="fas fa-times"></i></span>
         <h3>Deseja realmente sair?</h3>
         <div className="btns-sec">
-          <button className="btn-danger" onClick={props.toLogout}>Sim <i className="fas fa-times"></i></button>
-          <button className="btn-create" onClick={closeLogouModal}>Não</button>
+          <button className="btn-create" onClick={props.toLogout}>Sim</button>
+          <button className="btn-danger" onClick={closeLogouModal}>Não</button>
         </div>
       </Modal>
     </div>

@@ -58,10 +58,3 @@
 .buttons-section {
 	text-align: right;
 }
-
-@media (max-width:1570px) {
-  .project-card {
-    width: 400px;
-  }
-
-}
