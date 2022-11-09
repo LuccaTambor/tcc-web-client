@@ -58,10 +58,19 @@ function ProjectDetails(props) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [occurrenceDetaisOpen, setOccurrenceDetailsOpen] =  React.useState(false);
   const [occurrencesData, setOccurrencesData] = React.useState({});
+  const [warningModalOpen, setWarningModalOpen] =React.useState(false);
   const [occurreceDetaisText, setOccurreceDetaisText] = React.useState("");
   const [newTeamForm, setNewTeamForm] = React.useState({
     teamName: ""
   });
+
+  const openWarning = () => {
+    setWarningModalOpen(true);
+  }
+
+  const closeWarning = () => {
+    setWarningModalOpen(false);
+  }
 
   React.useEffect(() => {
     getData(id, props.isManager(), props.userData.id)
@@ -97,6 +106,16 @@ function ProjectDetails(props) {
 
   const teams = projectData ? _.map(projectData.teams, team => {
     const teamUrl = "/time/" + team.id;
+    
+
+    
+
+    const checkDeleteTeam = () => {
+      if (team?.developers?.length > 0)
+        openWarning();
+      else
+        removeTeam(team.id);
+    }
 
     return (   
         <div className="team-card" key={team.id}>
@@ -107,8 +126,9 @@ function ProjectDetails(props) {
           </div>
           <div className="delete-section">    
             <Link to={teamUrl} className="btn-primary">Detalhes</Link> 
-            {props.isManager() && <button className="btn-danger" onClick={() => {removeTeam(team.id)}}><i className="fas fa-trash"></i></button>}
+            {props.isManager() && <button className="btn-danger" onClick={() => {checkDeleteTeam()}}><i className="fas fa-trash"></i></button>}
           </div>
+          
         </div>
     )
   }) : null;
@@ -255,6 +275,19 @@ function ProjectDetails(props) {
           value={occurreceDetaisText}
         />
       </Modal>
+      <Modal
+            isOpen={warningModalOpen}
+            onRequestClose={closeWarning}
+            contentLabel="Example Modal"
+            className="modal warning-modal"
+            overlayClassName="overlay"
+          >
+            <div className="warning">
+              <span className="warning-icon"><i className="fas fa-times"></i></span>
+              <h3 className="warning-text">Não é possível apagar um time que possui desenvolvedores e tarefas</h3>
+              <button className="btn-danger" onClick={closeWarning}>OK</button>
+            </div>
+          </Modal>
     </div>
   )
 }
