@@ -75,6 +75,7 @@ function Statistics (props) {
     const groupedByTeam = _.groupBy(projStats.occurrences, (ocor) => {
       return ocor.team
     })
+
     const teamsLabels = (Object.keys(groupedByTeam));
 
     const teamsTags = _.map(teamsLabels, (team, i) => {

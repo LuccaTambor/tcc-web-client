@@ -101,6 +101,16 @@ async function createNewOccurrence(newOccurrence) {
   })
 }
 
+async function getDevOccurrencesInTeam(teamId, devId) {
+  const getUrl = '/api/occurrences/getOccurrencesDev?teamId=' + teamId +'&devId=' + devId;
+
+  return fetch(URL + getUrl)
+    .then(data => data.json())
+    .catch(err => {
+      console.log(err);
+    })
+}
+
 Modal.setAppElement('#root');
 
 function Team(props) {
@@ -127,6 +137,9 @@ function Team(props) {
   const [newTaskData, setNewTaskData] = React.useState(newTaskModel)
   const [newOccurrenceData, setNewOccurrenceData] = React.useState(newOccurrenceModel);
   const [tasksData, setTasksData] = React.useState({});
+  const [occurrencesData, setOccurrencesData] = React.useState({});
+  const [occurreceDetaisText, setOccurreceDetaisText] = React.useState("");
+  const [occurrenceDetaisOpen, setOccurrenceDetailsOpen] =  React.useState(false);
 
   React.useEffect(() => {
     getTeamData(id)
@@ -152,12 +165,28 @@ function Team(props) {
     })
   },[id])
 
+  React.useEffect(() => {
+    getDevOccurrencesInTeam(id, props.userId)
+      .then(data => setOccurrencesData(data))
+      .catch(err => {
+        console.log("Erro ao carregar ocorrências do projeto.");
+      })
+  },[id, props])
+
   const updateTasks = () => {
     getTasks(id)
     .then(data => setTasksData(data))
     .catch(err => {
       console.log("Erro ao carregar tarefas do time");
     })
+  }
+
+  const updateOccurrences = () => {
+    getDevOccurrencesInTeam(id, props.userId)
+      .then(data => setOccurrencesData(data))
+      .catch(err => {
+        console.log("Erro ao carregar ocorrências do projeto.");
+      })
   }
 
   const devs = teamData ? _.map(teamData.developers, (dev,i) => {
@@ -339,6 +368,37 @@ function Team(props) {
     }
   ];
 
+  const occurrenceDevColumns =
+  [
+    {
+      Header: 'Data',
+      accessor: 'date'
+    },
+    {
+      Header: 'Categoria',
+      accessor: 'typeText',
+    },
+    {
+      Header: "Detalhes",
+      Cell: row => (
+        <button className="desc-btn" title="Detalhes da ocorrência" onClick={e => openOccurrenceDeatilsModal(row.row.original.description)}> 
+          <i className="fas fa-list"></i>
+        </button>
+      )
+    }
+  ];
+
+  //modal functions
+  function openOccurrenceDeatilsModal(detailsText) {
+    setOccurreceDetaisText(detailsText);
+    setOccurrenceDetailsOpen(true);
+  }
+
+  function closeOccurrenceDeatilsModal() {
+    setOccurrenceDetailsOpen(false);
+    setOccurreceDetaisText("");
+  }
+
   const submitTaskForm = async event => {
     event.preventDefault();
     await createTask(newTaskData, id)
@@ -354,7 +414,8 @@ function Team(props) {
     event.preventDefault();
     await createNewOccurrence(newOccurrenceData)
       .then(closeOccurrenceModal())
-      //.then(setNewOccurrenceData(newOccurrenceModel))
+      .then(setNewOccurrenceData(newOccurrenceModel))
+      .then(updateOccurrences)
       .catch(err => {
         console.log("Erro ao criar ocorrência");
       })
@@ -403,7 +464,14 @@ function Team(props) {
         {props.isManager() && <button className="btn-primary" onClick={openTaskModal}>Criar Tarefa</button>}
       </div>
       <br />
-      {!props.isManager() && <button className="btn-primary" onClick={openOccurrenceModal}>Ocorrência</button>}
+      {!props.isManager() && 
+      <div className="">
+        <h2>Suas ocorrências no Time</h2>
+        {occurrencesData.length === 0 && <p className="no-task">Nenhuma ocorrência</p>}  
+        {occurrencesData.length > 0 && <Table columns={occurrenceDevColumns} data={occurrencesData} />}
+        <button className="btn-primary" onClick={openOccurrenceModal}>Nova Ocorrência</button>
+      </div>   
+      }
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -510,6 +578,21 @@ function Team(props) {
           </select>
           <button className="btn-create">Criar</button>
         </form>
+      </Modal>
+      <Modal
+        isOpen={occurrenceDetaisOpen}
+        onRequestClose={closeOccurrenceDeatilsModal}
+        contentLabel="Example Modal"
+        className="modal occurrence-details-modal"
+        overlayClassName="overlay"
+      >
+        <span onClick={closeOccurrenceDeatilsModal} className="close-btn"><i className="fas fa-times"></i></span>
+        <h3>Detalhes da ocorrência</h3>
+        <textarea 
+          type="text"
+          readOnly
+          value={occurreceDetaisText}
+        />
       </Modal>
     </div>
   )

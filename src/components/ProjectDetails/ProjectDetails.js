@@ -41,7 +41,7 @@ async function createTeam(projectId, teamName) {
 }
 
 async function getOccurrencesFromProject(projectId, devId = null) {
-  const getUrl = devId ? '/api/occurrences/getOccurrencesDev?projId=' + projectId +'&devId=' + devId : '/api/occurrences/getOccurrences?projId=' + projectId;
+  const getUrl = '/api/occurrences/getOccurrences?projId=' + projectId;
 
   return fetch(URL + getUrl)
     .then(data => data.json())
@@ -107,9 +107,6 @@ function ProjectDetails(props) {
   const teams = projectData ? _.map(projectData.teams, team => {
     const teamUrl = "/time/" + team.id;
     
-
-    
-
     const checkDeleteTeam = () => {
       if (team?.developers?.length > 0)
         openWarning();
@@ -185,6 +182,10 @@ function ProjectDetails(props) {
       accessor: 'typeText',
     },
     {
+      Header: 'Time',
+      accessor: 'team'
+    },
+    {
       Header: "Relator",
       accessor: "developer"
     },
@@ -197,28 +198,6 @@ function ProjectDetails(props) {
       )
     }
   ];
-
-  const occurrenceDevColumns =
-  [
-    {
-      Header: 'Data',
-      accessor: 'date'
-    },
-    {
-      Header: 'Categoria',
-      accessor: 'typeText',
-    },
-    {
-      Header: "Detalhes",
-      Cell: row => (
-        <button className="desc-btn" title="Detalhes da ocorrência" onClick={e => openOccurrenceDeatilsModal(row.row.original.description)}> 
-          <i className="fas fa-list"></i>
-        </button>
-      )
-    }
-  ];
-
-  const selectedCollumns = props.isManager() ? occurrenceColumns : occurrenceDevColumns;
 
   return (
     <div className="project-details">
@@ -233,13 +212,15 @@ function ProjectDetails(props) {
         {props.isManager() && <div className="btn-primary" onClick={openModal}>Criar Time</div>}
       </div>
       <br />
+      {props.isManager() && 
       <div className="occurrences-section">
-        <h2>{!props.isManager() && <span>Suas </span>} Ocorrências no Projeto</h2>
-        <p>Ocorrências relatadas ao longo do projeto {!props.isManager() && <span>por você</span>}: <b>{projectData.occurrencesInProject}</b></p>
+        <h2>Ocorrências no Projeto</h2>
+        <p>Ocorrências relatadas ao longo do projeto: <b>{projectData.occurrencesInProject}</b></p>
         <div className="occurrences-table">
-          {occurrencesData.length > 0 && <Table columns={selectedCollumns} data={occurrencesData} />}
+          {occurrencesData.length > 0 && <Table columns={occurrenceColumns} data={occurrencesData} />}
         </div>
       </div>
+      }
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
