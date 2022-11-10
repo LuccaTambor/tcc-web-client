@@ -116,7 +116,7 @@ Modal.setAppElement('#root');
 function Team(props) {
   const {id} = useParams();
   const newTaskModel = {
-    code: 0,
+    code: 1,
     title: "",
     description: "",
     expectedDate: moment().toDate()
@@ -510,6 +510,7 @@ function Team(props) {
             value={newTaskData.code}
             onChange={handleNewTaskForm}
             required
+            min={1}
             className="half"
           />
           <label>Data de conclusão esperada</label>
