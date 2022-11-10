@@ -17,9 +17,20 @@ function BarChart(props) {
       },
     ],
   };
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1
+        }
+      }
+    }
+  }
+
   return (
     <div className="my-chart">
-      <Bar data={data}/>
+      <Bar data={data} options={options}/>
     </div>
   );
 
