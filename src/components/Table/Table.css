@@ -74,8 +74,8 @@ table td:nth-child(4) {
 	background-color: rgb(70, 172, 70);
 	border: none;
 	border-radius: 5px;
-	height: 40px;
-	width: 40px;
+	height: 30px !important;
+	width: 30px !important;
 	cursor: pointer;
 }
 

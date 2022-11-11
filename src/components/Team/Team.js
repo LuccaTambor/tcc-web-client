@@ -129,6 +129,12 @@ function Team(props) {
     developerId: props.userId
   }
 
+  const newConfirmRemoveDevModel = {
+    open: false,
+    devId: "",
+    devName: ""
+  };
+
   const [teamData, setTeamData] = React.useState({});
   const [devsNotOnTeam, setDevsNotOnTeam] = React.useState({});
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -140,6 +146,7 @@ function Team(props) {
   const [occurrencesData, setOccurrencesData] = React.useState({});
   const [occurreceDetaisText, setOccurreceDetaisText] = React.useState("");
   const [occurrenceDetaisOpen, setOccurrenceDetailsOpen] =  React.useState(false);
+  const [confirmRemoveDevModal, setConfirmRemoveDevModal] = React.useState(newConfirmRemoveDevModel)
 
   React.useEffect(() => {
     getTeamData(id)
@@ -166,11 +173,14 @@ function Team(props) {
   },[id])
 
   React.useEffect(() => {
-    getDevOccurrencesInTeam(id, props.userId)
+    if(!props.isManager()) {
+      getDevOccurrencesInTeam(id, props.userId)
       .then(data => setOccurrencesData(data))
       .catch(err => {
         console.log("Erro ao carregar ocorrências do projeto.");
       })
+    }
+    
   },[id, props])
 
   const updateTasks = () => {
@@ -272,7 +282,7 @@ function Team(props) {
   const removeFromTeam = async (devId) => {
     await removeDevFromTeam(devId, id)
     .then(updateTeam)
-    .then(closeModal())
+    .then(closeConfirmRemoveDev())
     .catch(err => {
       console.log("Erro ao remover dev ao time");
     })
@@ -294,7 +304,7 @@ function Team(props) {
     {
       Header: "Ação",
       Cell: row => (
-        <button className="delete-btn" onClick={e => removeFromTeam(row.row.original.id)} title="Remover do time"> 
+        <button className="delete-btn" onClick={e => openConfirmeRemoveDev(row.row.original.id, row.row.original.name)} title="Remover do time"> 
           <i className="fas fa-times"></i>
         </button>
       )
@@ -326,6 +336,19 @@ function Team(props) {
 
   function closeOccurrenceModal() {
     setOccurrenceModalOpen(false);
+  }
+
+  //confirm remove dev functions
+  function openConfirmeRemoveDev(devId, devName) {
+    setConfirmRemoveDevModal({
+      open: true,
+      devId: devId,
+      devName: devName
+    })
+  }
+
+  function closeConfirmRemoveDev() {
+    setConfirmRemoveDevModal(newConfirmRemoveDevModel)
   }
 
   const handleNewTaskForm = (event) => {
@@ -594,6 +617,20 @@ function Team(props) {
           readOnly
           value={occurreceDetaisText}
         />
+      </Modal>
+      <Modal
+        isOpen={confirmRemoveDevModal.open}
+        onRequestClose={closeConfirmRemoveDev}
+        contentLabel="Example Modal"
+        className="modal warning-modal"
+        overlayClassName="overlay"
+      >
+         <div className="warning">
+              <span className="warning-icon"><i className="fas fa-times"></i></span>
+              <h3 className="warning-text">Quer realmente remover [{confirmRemoveDevModal.devName}] do time?</h3>
+              <button className="btn-danger" onClick={() => removeFromTeam(confirmRemoveDevModal.devId)}>Sim</button>
+              <button className="btn-primary" style={{backgroundColor: '#7A4EBB'}} onClick={closeConfirmRemoveDev}>Não</button>
+            </div>
       </Modal>
     </div>
   )
