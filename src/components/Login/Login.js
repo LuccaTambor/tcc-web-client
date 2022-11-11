@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import './Login.css'
 import Logo from './Logo.png';
@@ -24,6 +25,7 @@ async function loginUser(credentials) {
 }
 
 function Login(props) {
+  const navigate = useNavigate();
   const [failedLogin, setFailedLogin] =  React.useState(false);
   const [loginForm, setLoginForm] = React.useState({
     userName: "",
@@ -46,6 +48,7 @@ function Login(props) {
     setFailedLogin(false)
     await loginUser(loginForm)
       .then(token => props.onSetData(token))
+      .then(navigate('/'))
       .then(props.loader.end)
       .catch(err => {
         console.log("Erro ao logar");

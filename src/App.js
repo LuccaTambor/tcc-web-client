@@ -45,13 +45,13 @@ function App() {
 
   if(!userData) {
     return (
-    <div className="">
+    <BrowserRouter>
       {isLoading && 
       <div className="loader-cointainer">
         <ReactLoading type="spin" color="#7A4EBB" className="loader"/>
       </div>}
       <Login onSetData={handleUserData} loader={loader}/>
-    </div>
+    </BrowserRouter>
     )
   }
 
