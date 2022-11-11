@@ -23,6 +23,17 @@ async function createDev(newDev) {
   });
 }
 
+async function deleteDev(devId) {
+  return fetch(URL + '/api/users/deleteDev?id=' + devId, {
+    method: "DELETE"
+  })
+  .then((res) => {
+    if (res.status === 400) {
+      throw new Error('Error in login');
+    }
+  })
+}
+
 async function getDevelopers() {
   return fetch(URL + '/api/users/GetDevelopers')
 }
@@ -43,7 +54,16 @@ function Developers(props){
   const [unmatchedPassword, setUnmatchedPassword] =  React.useState(false);
   const [developersData, setDevelopersData] = React.useState({});
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [newDevData, setNewDevData] = React.useState(newDeveloper)
+  const [newDevData, setNewDevData] = React.useState(newDeveloper);
+  const [warningModalOpen, setWarningModalOpen] =React.useState(false);
+
+  const openWarning = () => {
+    setWarningModalOpen(true);
+  }
+
+  const closeWarning = () => {
+    setWarningModalOpen(false);
+  }
   React.useEffect(() => {
     getDevelopers()
       .then(response => response.json())
@@ -59,27 +79,47 @@ function Developers(props){
     }
   })
 
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'Nome',
-        accessor: 'name'
-      },
-      {
-        Header: 'Cargo',
-        accessor: 'function',
-      },
-      {
-        Header: 'Documento',
-        accessor: 'document',
-      },
-      {
-        Header: 'Email',
-        accessor: 'email'
-      }
-    ],
-    []
-  );
+  const updateDevs = () => {
+    getDevelopers()
+      .then(response => response.json())
+      .then(data => setDevelopersData(data));
+  }
+
+  const removeDev = async (devId) => {
+    await deleteDev(devId)
+    .then(updateDevs)
+    .catch(err => {
+      openWarning()
+      console.log("Não é possível deletar este desenvolvedor!");
+    })
+  }
+
+  const columns =[
+    {
+      Header: 'Nome',
+      accessor: 'name'
+    },
+    {
+      Header: 'Cargo',
+      accessor: 'function',
+    },
+    {
+      Header: 'Documento',
+      accessor: 'document',
+    },
+    {
+      Header: 'Email',
+      accessor: 'email'
+    },
+    {
+      Header: "Ação",
+      Cell: row => (
+        <button className="delete-btn" onClick={e => removeDev(row.row.original.id)} title="Remover do time"> 
+          <i className="fas fa-times"></i>
+        </button>
+      )
+    }
+  ];
 
   //modal functions
   function openModal() {
@@ -199,6 +239,19 @@ function Developers(props){
           />
           <button className="btn-create btn-save">Criar</button>
         </form>
+      </Modal>
+      <Modal
+        isOpen={warningModalOpen}
+        onRequestClose={closeWarning}
+        contentLabel="Example Modal"
+        className="modal warning-modal"
+        overlayClassName="overlay"
+      >
+        <div className="warning">
+          <span className="warning-icon"><i className="fas fa-times"></i></span>
+          <h3 className="warning-text">Não é possível deletar este desenvolvedor, ele possui times e ocorências!</h3>
+          <button className="btn-danger" onClick={closeWarning}>OK</button>
+        </div>
       </Modal>
     </div>
   );
