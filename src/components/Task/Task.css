@@ -12,13 +12,15 @@
   border-radius: 5px;
   border-bottom: 15px solid var(--secondaryColor);
   width: 300px;
-  height: 225px;
+  min-height: 225px;
+  height: fit-content;
 }
 
 .task-card .header {
   padding: 0;
   margin: 0;
-  height: 50px;
+  min-height: 50px;
+  height: fit-content;
   background-color: var(--secondaryColor)
 }
 
