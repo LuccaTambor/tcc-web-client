@@ -116,7 +116,7 @@ Modal.setAppElement('#root');
 function Team(props) {
   const {id} = useParams();
   const newTaskModel = {
-    code: 1,
+    code: "",
     title: "",
     description: "",
     expectedDate: moment().toDate()
